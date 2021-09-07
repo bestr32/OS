@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li>
+            <a href="/part-six">Virtualization & Cloud</a>
+          </li>
+          <li>
+            <a class="link-active" href="/part-seven">Multi CPU System</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Multi CPU Systems</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-seven/multiprocessors">Multiprocessors</a>
+        </li>
+        <li>
+          <a href="/part-seven/multicomputers">Multicomputers</a>
+        </li>
+        <li>
+          <a href="/part-seven/distributed-systems">Distributed Systems</a>
+        </li>
+      </ul>
+
+      <p>
+        Since its inception, the computer industry has been driven by an endless
+        quest for more and more computing power.
+      </p>
+      <p>
+        In the past, the solution was always to make the clock run faster.
+        Unfortunately, we hav e begun to hit some fundamental limits on clock
+        speed.
+      </p>
+      <p>
+        According to Einstein’s special theory of relativity, no electrical
+        signal can propagate faster than the speed of light, which is about 30
+        cm/nsec in vacuum and about 20 cm/nsec in copper wire or optical fiber.
+        This means that in a computer with a 10-GHz clock, the signals cannot
+        travel more than 2 cm in total. For a 100-GHz computer the total path
+        length is at most 2 mm. A 1-THz (1000-GHz) computer will have to be
+        smaller than 100 microns, just to let the signal get from one end to the
+        other and back once within a single clock cycle.
+      </p>
+      <p>
+        Making computers this small may be possible, but then we hit another
+        fundamental problem: heat dissipation. The faster the computer runs, the
+        more heat it generates, and the smaller the computer, the harder it is
+        to get rid of this heat.
+      </p>
+      <p>
+        One approach to greater speed is through massively parallel computers.
+        These machines consist of many CPUs, each of which runs at ‘‘normal’’
+        speed (whatever that may mean in a given year), but which collectively
+        have far more computing power than a single CPU. Systems with tens of
+        thousands of CPUs are now commercially available.
+      </p>
+
+      <p>
+        The trouble comes in when you want them to communicate with one another
+        to work together on a single problem.
+      </p>
+      <p>
+        All communication between electronic (or optical) components ultimately
+        comes down to sending messages—well-defined bit strings—between them.
+      </p>
+
+      <a class="end-link" href="/part-seven/multiprocessors"
+        >Next chapter: Multiprocessors</a
+      >
+    </article>
+  </body>
+</html>

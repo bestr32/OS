@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a class="link-active" href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Deadlocks</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-five/resources">Resources</a>
+        </li>
+        <li>
+          <a href="/part-five/deadlocks-intro">Introduction to Deadlocks</a>
+        </li>
+        <li>
+          <a href="/part-five/detection-recovery"
+            >Deadlock Detection & Recovery</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/avoidance">Deadlock Avoidance</a>
+        </li>
+        <li>
+          <a href="/part-five/prevention">Deadlock Prevention</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-five/other-issues">Other Issues</a>
+        </li>
+      </ul>
+
+      <p>
+        A few miscellaenous issues related to deadlocks are two-phase locking,
+        nonresource deadlocks and starvation.
+      </p>
+
+      <h4>Two-Phase Locking</h4>
+      <p>
+        Although both avoidance and prevention are not terribly promising in the
+        general case, for specific applications, many excellent special-purpose
+        algorithms are known. As an example, in many database systems, an
+        operation that occurs frequently is requesting locks on several records
+        and then updating all the locked records. When multiple processes are
+        running at the same time, there is a real danger of deadlock.
+      </p>
+      <p>
+        The approach often used is called two-phase locking. In the first phase,
+        the process tries to lock all the records it needs, one at a time. If it
+        succeeds, it begins the second phase, performing its updates and
+        releasing the locks. No real work is done in the first phase.
+      </p>
+      <p>
+        If during the first phase, some record is needed that is already locked,
+        the process just releases all its locks and starts the first phase all
+        over. In a certain sense, this approach is similar to requesting all the
+        resources needed in advance, or at least before anything irreversible is
+        done. In some versions of two-phase locking, there is no release and
+        restart if a locked record is encountered during the first phase. In
+        these versions, deadlock can occur.
+      </p>
+      <p>
+        However, this strategy is not applicable in general. In real-time
+        systems and process control systems, for example, it is not acceptable
+        to just terminate a process partway through because a resource is not
+        available and start all over again.
+      </p>
+
+      <h4>Communication Deadlocks</h4>
+      <p>
+        If a procces A sends a request message to a different process B, process
+        A blocks until B sends back a reply. Imagine if the request message gets
+        lost. A is blocked waiting for the reply and B is blocked waiting for a
+        request. This is a <strong>communication deadlock</strong>.
+      </p>
+
+      <details>
+        <summary>Deadlocks Summary</summary>
+        <p>
+          Deadlock is a potential problem in any operating system. It occurs
+          when all the members of a set of processes are blocked waiting for an
+          event that only other members of the same set can cause. This
+          situation causes all the processes to wait forever.
+        </p>
+        <p>
+          Commonly the event that the processes are waiting for is the release
+          of some resource held by another member of the set. Another situation
+          in which deadlock is possible is when a set of communicating processes
+          are all waiting for a message and the communication channel is empty
+          and no timeouts are pending.
+        </p>
+        <p>
+          Resource deadlock can be avoided by keeping track of which states are
+          safe and which are unsafe.
+        </p>
+        <p>
+          A safe state is one in which there exists a sequence of events that
+          guarantee that all processes can finish. An unsafe state has no such
+          guarantee.
+        </p>
+        <p>
+          The banker’s algorithm avoids deadlock by not granting a request if
+          that request will put the system in an unsafe state.
+        </p>
+        <p>
+          Resource deadlock can be structurally prevented by building the system
+          in such a way that it can never occur by design. For example, by
+          allowing a process to hold only one resource at any instant the
+          circular wait condition required for deadlock is broken. Resource
+          deadlock can also be prevented by numbering all the resources and
+          making processes request them in strictly increasing order
+        </p>
+        <p>
+          Resource deadlock is not the only kind of deadlock. Communication
+          deadlock is also a potential problem in some systems although it can
+          often be handled by setting appropriate timeouts.
+        </p>
+        <p>
+          Livelock is similar to deadlock in that it can stop all forward
+          progress, but it is technically different since it involves processes
+          that are not actually blocked. Starvation can be avoided by a
+          first-come, first-served allocation policy.
+        </p>
+      </details>
+
+      <a class="end-link" href="/part-six">Next part: Virtualization & Cloud</a>
+    </article>
+  </body>
+</html>

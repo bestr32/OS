@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a class="link-active" href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Processes & Threads</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-one/processes">Processes</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-one/threads">Threads</a>
+        </li>
+        <li>
+          <a href="/part-one/interprocess-communication"
+            >Interprocess Communication</a
+          >
+        </li>
+        <li>
+          <a href="/part-one/scheduling">Scheduling</a>
+        </li>
+      </ul>
+
+      <p>
+        In traditional operating systems, each process has an address space and
+        a single thread of control.
+      </p>
+      <p>
+        In many situations, it is desirable to have multiple threads of control
+        in the same address space running in quasi-parallel, as though they were
+        (almost) separate processes (except for the shared address space).
+      </p>
+      <p>These mini processes are called <strong>threads</strong>.</p>
+      <p>
+        The main reason for having threads is that in many applications,
+        multiple activities are going on at once. Some of these may block from
+        time to time. By decomposing such an application into multiple
+        sequential threads that run in quasi-parallel, the programming model
+        becomes simpler.
+      </p>
+      <p>
+        We have seen this argument once before. It is precisely the argument for
+        having processes. Instead, of thinking about interrupts, timers, and
+        context switches, we can think about parallel processes.
+      </p>
+      <p>
+        Only now with threads we add a new element: the ability for the parallel
+        entities to share an address space and all of its data among themselves.
+      </p>
+      <p>
+        This ability is essential for certain applications, which is why having
+        multiple processes (with their separate address spaces) will not work.
+      </p>
+      <p>
+        A second argument for having threads is that since they are lighter
+        weight than processes, they are easier (i.e., faster) to create and
+        destroy than processes. In many systems, creating a thread goes 10–100
+        times faster than creating a process. When the number of threads needed
+        changes dynamically and rapidly, this property is useful to have.
+      </p>
+      <p>
+        A third reason for having threads is also a performance argument.
+        Threads yield no performance gain when all of them are CPU bound, but
+        when there is substantial computing and also substantial I/O, having
+        threads allows these activities to overlap, thus speeding up the
+        application.
+      </p>
+      <p>
+        Finally, threads are useful on systems with multiple CPUs, where real
+        parallelism is possible.
+      </p>
+
+      <h4>Example: A Word Processor</h4>
+      <p>
+        Suppose that the word processor is written as a twothreaded program. One
+        thread interacts with the user and the other handles reformatting in the
+        background. As soon as the sentence is deleted from page 1, the
+        interactive thread tells the reformatting thread to reformat the whole
+        book.
+      </p>
+      <p>
+        Meanwhile, the interactive thread continues to listen to the keyboard
+        and mouse and responds to simple commands like scrolling page 1 while
+        the other thread is computing madly in the background.
+      </p>
+      <p>
+        With a little luck, the reformatting will be completed before the user
+        asks to see page 600, so it can be displayed instantly.
+      </p>
+      <p>While we are at it, why not add a third thread?</p>
+      <p>
+        Many word processors have a feature of automatically saving the entire
+        file to disk every few minutes to protect the user against losing a
+        day’s work in the event of a program crash, system crash, or power
+        failure.
+      </p>
+      <p>
+        The third thread can handle the disk backups without interfering with
+        the other two.
+      </p>
+      <p>
+        If the program were single-threaded, then whenever a disk backup
+        started, commands from the keyboard and mouse would be ignored until the
+        backup was finished. The user would surely perceive this as sluggish
+        performance.
+      </p>
+      <p>
+        Alternatively, keyboard and mouse events could interrupt the disk
+        backup, allowing good performance but leading to a complex
+        interrupt-driven programming model.
+      </p>
+      <p>
+        With three threads, the programming model is much simpler. The first
+        thread just interacts with the user. The second thread reformats the
+        document when told to. The third thread writes the contents of RAM to
+        disk periodically.
+      </p>
+      <p>
+        It should be clear that having three separate processes would not work
+        here because all three threads need to operate on the document.
+      </p>
+      <p>
+        By having three threads instead of three processes, they share a common
+        memory and thus all have access to the document being edited. With three
+        processes this would be impossible.
+      </p>
+
+      <h4>The Classical Thread Model</h4>
+      <p>
+        The process model is based on two independent concepts: resource
+        grouping and execution. Sometimes it is useful to separate them. This is
+        where threads come in.
+      </p>
+      <p>
+        We will look at the classical thread model but there is also the Linux
+        thread model which blurs the line between processes & threads.
+      </p>
+      <p>
+        The thread has a program counter that keeps track of which instruction
+        to execute next.
+      </p>
+      <p>It has registers, which hold its current working variables.</p>
+      <p>
+        It has a stack, which contains the execution history, with one frame for
+        each procedure called but not yet returned from.
+      </p>
+      <p>
+        Although a thread must execute in some process, the thread and its
+        process are different concepts and can be treated separately.
+      </p>
+      <p>
+        Processes are used to group resources together; threads are the entities
+        scheduled for execution on the CPU.
+      </p>
+      <p>
+        What threads add to the process model is to allow multiple executions to
+        take place in the same process environment, to a large degree
+        independent of one another. Having multiple threads running in parallel
+        in one process is analogous to having multiple processes running in
+        parallel in one computer. In the former case, the threads share an
+        address space and other resources. In the latter case, processes share
+        physical memory, disks, printers, and other resources.
+      </p>
+
+      <h4>POSIX Threads</h4>
+      <p>
+        To make it possible to write portable threaded programs, IEEE has
+        defined standard for threads called <strong>Pthreads</strong>.
+      </p>
+      <p>
+        All Pthreads threads have certain properties. Each one has an
+        identifier, a set of registers (including the program counter), and a
+        set of attributes, which are stored in a structure. The attributes
+        include the stack size, scheduling parameters, and other items needed to
+        use the thread.
+      </p>
+
+      <h4>Implementing Threads in User Space</h4>
+      <p>
+        There are two main places to implement threads: user space and the
+        kernel. The choice is a bit controversial, and a hybrid implementation
+        is also possible.
+      </p>
+      <p>
+        When threads are managed in user space, each process needs its own
+        private thread table to keep track of the threads in that process. This
+        table is analogous to the kernel’s process table, except that it keeps
+        track only of the per-thread properties, such as each thread’s program
+        counter, stack pointer, registers, state, and so forth. The thread table
+        is managed by the run-time system. When a thread is moved to ready state
+        or blocked state, the information needed to restart it is stored in the
+        thread table, exactly the same way as the kernel stores information
+        about processes in the process table.
+      </p>
+
+      <h4>Implementing Threads in the Kernel</h4>
+      <p>
+        The kernel has a thread table that keeps track of all the threads in the
+        system. When a thread wants to create a new thread or destroy an
+        existing thread, it makes a kernel call, which then does the creation or
+        destruction by updating the kernel thread table.
+      </p>
+      <p>
+        The kernel’s thread table holds each thread’s registers, state, and
+        other information. The information is the same as with user-level
+        threads, but now kept in the kernel instead of in user space (inside the
+        run-time system).
+      </p>
+
+      <a class="end-link" href="/part-one/interprocess-communication"
+        >Next chapter: Interprocess Communication</a
+      >
+    </article>
+  </body>
+</html>

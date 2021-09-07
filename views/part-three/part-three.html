@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a class="link-active" href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>File Systems</h2>
+
+      <ul class="blog-list">
+        <li><a href="/part-three/files">Files</a></li>
+        <li><a href="/part-three/directories">Directories</a></li>
+        <li><a href="/part-three/file-system-implementation">File-System Implementation</a></li>
+        <li><a href="/part-three/file-system-management-optimization">File-System Management & Optimization</a></li>
+      </ul>
+
+      <p>
+        All computer applications need to store and retrieve information. While
+        a process is running, it can store a limited amount of information
+        within its own address space.
+      </p>
+      <p>
+        However, the storage capacity is restricted to the size of the virtual
+        address space. For some applications this size is adequate, but for
+        others it's too small.
+      </p>
+
+      <p>
+        A second problem with keeping information within a process’ address
+        space is that when the process terminates, the information is lost.
+      </p>
+
+      <p>
+        A third problem is that it is frequently necessary for multiple
+        processes to access (parts of) the information at the same time.
+      </p>
+
+      <p>
+        Thus, we have three essential requirements for long-term information
+        storage:
+      </p>
+
+      <ol>
+        <li>
+          It must be possible to store a very large amount of information.
+        </li>
+        <li>
+          The information must survive the termination of the process using it.
+        </li>
+        <li>
+          Multiple processes must be able to access the information at once.
+        </li>
+      </ol>
+
+      <p>Just as the OS abstracts away:</p>
+      <ul>
+        <li>
+          <p>
+            the concept of the processor to create the abstraction of a process
+          </p>
+        </li>
+        <li>
+          <p>
+            the concept of physical memory to offer processes (virtual) address
+            spaces,
+          </p>
+        </li>
+      </ul>
+      <p>
+        we can solve these problems with a new abstraction:
+        <strong>the file.</strong>
+      </p>
+
+      <a class="end-link" href="/part-three/files">Next chapter: Files</a>
+    </article>
+  </body>
+</html>

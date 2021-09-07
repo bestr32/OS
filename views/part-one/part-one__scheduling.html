@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a class="link-active" href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Processes & Threads</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-one/processes">Processes</a>
+        </li>
+        <li>
+          <a href="/part-one/threads">Threads</a>
+        </li>
+        <li>
+          <a href="/part-one/interprocess-communication"
+            >Interprocess Communication</a
+          >
+        </li>
+        <li>
+          <a class="link-active" href="/part-one/scheduling">Scheduling</a>
+        </li>
+      </ul>
+
+      <p>
+        When a computer is multiprogrammed, it frequently has multiple processes
+        or threads competing for the CPU at the same time.
+      </p>
+      <p>
+        This situation occurs whenever two or more of them are simultaneously in
+        the ready state.
+      </p>
+      <p>
+        If only one CPU is available, a choice has to be made which process to
+        run next.
+      </p>
+      <p>
+        The part of the operating system that makes the choice is called the
+        <strong>scheduler</strong>, and the algorithm it uses is called the
+        <strong>scheduling algorithm</strong>.
+      </p>
+      <p>
+        Because CPU time is a scarce resource on these machines, a good
+        scheduler can make a big difference in perceived performance and user
+        satisfaction. Consequently, a great deal of work has gone into devising
+        clever and efficient scheduling algorithms.
+      </p>
+
+      <h4>Process Behavior</h4>
+      <p>
+        Nearly all processes alternate bursts of computing with (disk or
+        network) I/O requests.
+      </p>
+      <p>
+        Often, the CPU runs for a while without stopping, then a system call is
+        made to read from a file or write to a file. When the system call
+        completes, the CPU computes again until it needs more data or has to
+        write more data, and so on.
+      </p>
+      <p>
+        <strong>Compute-bound</strong> processes typically have long CPU bursts
+        and thus infrequent I/O waits, whereas
+        <strong>I/O-bound</strong> processes have short CPU bursts and thus
+        frequent I/O waits.
+      </p>
+
+      <p>
+        A <strong>nonpreemptive</strong> scheduling algorithm picks a process to
+        run and then just lets it run until it blocks (either on I/O or waiting
+        for another process) or voluntarily releases the CPU.
+      </p>
+      <p>
+        A <strong>preemptive</strong> scheduling algorithm picks a process and
+        lets it run for a maximum of some fixed time. If it is still running at
+        the end of the time interval, it is suspended and the scheduler picks
+        another process to run (if one is available).
+      </p>
+
+      <p>
+        <strong>Throughput</strong> is the number of jobs per hour that the
+        system completes.
+      </p>
+      <p>
+        <strong>Turnaround time</strong> is the statistically average time from
+        the moment that a batch job is submitted until the moment it is
+        completed.
+      </p>
+
+      <h4>Scheduling in Batch Systems</h4>
+
+      <h5>First-Come, First-Served</h5>
+      <p>
+        Probably the simplest of all scheduling algorithms ever devised is
+        nonpreemptive first-come, first-served. With this algorithm, processes
+        are assigned the CPU in the order they request it. Basically, there is a
+        single queue of ready processes.
+      </p>
+
+      <h5>Shortest Job First</h5>
+      <p>
+        When several equally important jobs are sitting in the input queue
+        waiting to be started, the scheduler picks the shortest job first.
+      </p>
+
+      <h5>Shortest Remaining Time Next</h5>
+      <p>
+        A preemptive version of shortest job first is shortest remaining time
+        next. With this algorithm, the scheduler always chooses the process
+        whose remaining run time is the shortest. Again here, the run time has
+        to be known in advance.
+      </p>
+
+      <h4>Scheduling in Interactive Systems</h4>
+      <h5>Round-Robin Scheduling</h5>
+      <p>
+        One of the oldest, simplest, fairest, and most widely used algorithms is
+        round robin. Each process is assigned a time interval, called its
+        quantum, during which it is allowed to run. If the process is still
+        running at the end of the quantum, the CPU is preempted and given to
+        another process. If the process has blocked or finished before the
+        quantum has elapsed, the CPU switching is done when the process blocks,
+        of course.
+      </p>
+      <p>
+        All the scheduler needs to do is maintain a list of runnable processes.
+      </p>
+
+      <h5>Priority Scheduling</h5>
+      <p>
+        Round-robin scheduling makes the implicit assumption that all processes
+        are equally important.
+      </p>
+      <p>
+        The basic idea is straightforward: each process is assigned a priority,
+        and the runnable process with the highest priority is allowed to run.
+      </p>
+
+      <h5>Multiple Queues</h5>
+      <h5>Shortest Process Next</h5>
+      <h5>Guaranteed Scheduling</h5>
+
+      <h5>Lottery Scheduling</h5>
+      <p>
+        The basic idea is to give processes lottery tickets for various system
+        resources, such as CPU time. Whenever a scheduling decision has to be
+        made, a lottery ticket is chosen at random, and the process holding that
+        ticket gets the resource. When applied to CPU scheduling, the system
+        might hold a lottery 50 times a second, with each winner getting 20 msec
+        of CPU time as a prize.
+      </p>
+      <p>
+        More important processes can be given extra tickets, to increase their
+        odds of winning.
+      </p>
+
+      <a class="end-link" href="/part-two">Next part: Memory Management</a>
+    </article>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a class="link-active" href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>File Systems</h2>
+
+      <ul class="blog-list">
+        <li><a href="/part-three/files">Files</a></li>
+        <li>
+          <a class="link-active" href="/part-three/directories">Directories</a>
+        </li>
+        <li>
+          <a href="/part-three/file-system-implementation"
+            >File-System Implementation</a
+          >
+        </li>
+        <li>
+          <a href="/part-three/file-system-management-optimization"
+            >File-System Management & Optimization</a
+          >
+        </li>
+      </ul>
+
+      <p>
+        To keep track of files, file systems normally have
+        <strong>directories</strong> or <strong>folders</strong>, which are
+        themselves files.
+      </p>
+
+      <p>
+        The simplest form of a directory system is having one directory
+        containing all other files, called the <strong>root directory.</strong>
+      </p>
+
+      <p>
+        The single level is adequate for very simple dedicated applications, but
+        for modern users with thousands of files, it would be impossible to find
+        anything if all files were in a single directory.
+      </p>
+      <p>Consequently, a way is needed to group related files together.</p>
+      <p>
+        What is needed is a hierarchy (i.e., a tree of directories). With this
+        approach, there can be as many directories as are needed to group the
+        files in natural ways.
+      </p>
+      <p>
+        The ability for users to create an arbitrary number of subdirectories
+        provides a powerful structuring tool for users to organize their work.
+        For this reason, nearly all modern file systems are organized in this
+        manner (Hierarchical Directory System).
+      </p>
+      <h4>Path Names</h4>
+      <p>
+        When the file system is organized as a directory tree, some way is
+        needed for specifying file names.
+      </p>
+      <p>Two different methods are commonly used.</p>
+      <p>
+        In the first method each file is given an
+        <strong>absolute path name</strong> consisting of the path from the root
+        directory to the file.
+      </p>
+      <p>Absolute paths always start at the root directory and are unique.</p>
+      <p>
+        In UNIX the components are separated by /, in Windows the separator is
+        \. No matter which character is used, if the first character of the path
+        name is the separator, then the path is absolute.
+      </p>
+      <p>
+        The other kind of name is the <strong>relative path name</strong>. This
+        is used in conjunction with the concept of the
+        <strong>working directory</strong> (also called the
+        <strong>current directory</strong>).
+      </p>
+      <p>
+        A user can designate one directory as the current working directory, in
+        which case all path names not beginning at the root directory are taken
+        relative to the working directory.
+      </p>
+      <p>
+        Each process has its own working directory, so when it changes its
+        working directory and later exits, no other processes are affected and
+        no traces of the change are left behind in the file system. In this way,
+        it is always perfectly safe for a process to change its working
+        directory whenever it finds that to be convenient.
+      </p>
+      <p>
+        Most operating systems that support a hierarchical directory system have
+        two special entries in every directory, ‘‘.’’ and ‘‘..’’, generally
+        pronounced ‘‘dot’’ and ‘‘dotdot.’’
+      </p>
+      <p>
+        Dot refers to the current directory; dotdot refers to its parent (except
+        in the root directory, where it refers to itself).
+      </p>
+
+      <p>Example: cp ../lib/dictionary .</p>
+      <p>
+        The first path instructs the system to go upward (to the usr directory),
+        then to go down to the directory lib to find the file dictionary.
+      </p>
+
+      <h4>Directory Operations</h4>
+      <p>
+        The allowed system calls for managing directories exhibit more variation
+        from system to system than system calls for files. UNIX:
+      </p>
+      <ol>
+        <li>
+          Create. A directory is created. It is empty except for dot and dotdot
+          (automatically put).
+        </li>
+        <li>
+          Delete. A directory is deleted. Only an empty directory can be
+          deleted.
+        </li>
+        <li>
+          Opendir. Directories can be read. Before a directory can be read
+          (names of files it contains), it must be opened.
+        </li>
+        <li>
+          Closedir. When a directory has been read, it should be closed to free
+          up internal table space.
+        </li>
+        <li>Readdir. Returns the next entry in an open directory.</li>
+        <li>
+          Rename. In many respects, directories are just like files and can be
+          renamed the same way files can be.
+        </li>
+        <li>
+          Link. Linking is a technique that allows a file to appear in more than
+          one directory.
+        </li>
+        <li>Unlink. A directory entry is removed.</li>
+      </ol>
+
+      <a class="end-link" href="/part-three/file-system-implementation"
+        >Next chapter: File-System Implementation</a
+      >
+    </article>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li>
+            <a class="link-active" href="/part-six">Virtualization & Cloud</a>
+          </li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Virtualization & Cloud</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-six/requirements">Requirements for Virtualization</a>
+        </li>
+        <li>
+          <a href="/part-six/hypervisors">Type 1 & Type 2 Hypervisors</a>
+        </li>
+        <li>
+          <a href="/part-six/techniques"
+            >Techniques for Efficient Virtualization</a
+          >
+        </li>
+      </ul>
+
+      <p>
+        <strong>Virtualization</strong> allows a single computer to host
+        multiple virtual machines, each potentially running a completely
+        different operating system.
+      </p>
+      <p>
+        The main idea is that a <strong>VMM</strong> (<strong
+          >Virtual Machine Monitor</strong
+        >) creates the illusion of multiple (virtual) machines on the same
+        physical hardware. A VMM is also known as a <strong>hypervisor</strong>.
+      </p>
+      <p>There are Type 1 hypervisors and Type 2 hypervisors.</p>
+      <p>
+        Type 1 hypervisors run on the bare metal, and type 2 hypervisors make
+        use of all the wonderful services and abstractions offered by an
+        underlying operating system.
+      </p>
+
+      <p>
+        The advantage of this approach is that a failure in one virtual machine
+        does not bring down any others. On a virtualized system, different
+        servers can run on different virtual machines, thus maintaining the
+        partial-failure model that a multicomputer has, but at a lower cost and
+        with easier maintainability. Moreover, we can now run multiple different
+        operating systems on the same hardware, benefit from virtual machine
+        isolation in the face of attacks, and enjoy other good stuff.
+      </p>
+      <p>
+        Perhaps the most important and buzzword-compliant use case for
+        virtualization nowadays is found in the cloud. The key idea of a cloud
+        is straightforward: outsource your computation or storage needs to a
+        well-managed data center run by a company specializing in this and
+        staffed by experts in the area. Because the data center typically
+        belongs to someone else, you will probably have to pay for the use of
+        the resources, but at least you will not have to worry about the
+        physical machines, power, cooling, and maintenance.
+      </p>
+
+      <a class="end-link" href="/part-six/requirements"
+        >Next chapter: Requirements for Virtualization</a
+      >
+    </article>
+  </body>
+</html>

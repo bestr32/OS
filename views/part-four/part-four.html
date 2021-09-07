@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a class="link-active" href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Input/Output</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-four/io-hardware">Principles of I/O Hardware</a>
+        </li>
+        <li>
+          <a href="/part-four/io-software">Principles of I/O Software</a>
+        </li>
+        <li>
+          <a href="/part-four/io-software-layers">I/O Software Layers</a>
+        </li>
+        <li>
+          <a href="/part-four/io-disks">Disks</a>
+        </li>
+        <li>
+          <a href="/part-four/io-clocks">Clocks</a>
+        </li>
+        <li>
+          <a href="/part-four/io-ui-kmm">UIs: Keyboard, Mouse, Monitor</a>
+        </li>
+      </ul>
+
+      <p>
+        In addition to providing abstractions such as processes, address spaces,
+        and files, an operating system also controls all the computer’s I/O
+        (Input/Output) devices.
+      </p>
+      <p>
+        It must issue commands to the devices, catch interrupts, and handle
+        errors. It should also provide an interface between the devices and the
+        rest of the system that is simple and easy to use. To the extent
+        possible, the interface should be the same for all devices (device
+        independence).
+      </p>
+
+      <a class="end-link" href="/part-four/io-hardware"
+        >Next chapter: Principles of I/O Hardware</a
+      >
+    </article>
+  </body>
+</html>

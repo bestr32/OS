@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li>
+            <a class="link-active" href="/part-six">Virtualization & Cloud</a>
+          </li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Virtualization & Cloud</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-six/requirements">Requirements for Virtualization</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-six/hypervisors"
+            >Type 1 & Type 2 Hypervisors</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/techniques"
+            >Techniques for Efficient Virtualization</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/microkernels"
+            >Are Hypervisors Microkernels Done Right?</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/memory-virtualization">Memory Virtualization</a>
+        </li>
+        <li><a href="/part-six/io-virtualization">I/O Virtualization</a></li>
+        <li><a href="/part-six/clouds">Clouds</a></li>
+      </ul>
+
+      <p>There are two types of hypervisors (VMMs).</p>
+      <p>
+        <strong>Type 1 hypervisors</strong> are like an operating system - they
+        are the only program running in the most privileged mode. Its job is to
+        support multiple copies of the actual hardware, called
+        <strong>virtual machines</strong>, similar to the processes a normal
+        operating system runs.
+      </p>
+      <p>
+        <strong>Type 2 hypervisors</strong> are programs that rely on the (host)
+        operating system to allocate and schedule resources, very much like
+        regular processes. They still pretend to be a full computer with a CPU
+        and various devices.
+      </p>
+      <p>
+        Both types of hypervisor must execute the machine's instruction set in a
+        safe manner.
+      </p>
+      <p>
+        The operating system running on top of the hypervisor in both cases is
+        called the <strong>guest operating system</strong>.
+      </p>
+      <p>
+        For a type 2 hypervisor, the operating system running on the hardware is
+        called the <strong>host operating system</strong>.
+      </p>
+
+      <a class="end-link" href="/part-six/techniques"
+        >Next chapter: Techniques for Efficient Virtualization</a
+      >
+    </article>
+  </body>
+</html>

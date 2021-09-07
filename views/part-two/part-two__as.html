@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a class="link-active" href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Memory Management</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-two/no-memory-abstraction">No Memory Abstraction</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-two/address-spaces"
+            >A Memory Abstraction: Address Spaces</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/virtual-memory">Virtual Memory</a>
+        </li>
+        <li>
+          <a href="/part-two/page-replacement-algorithms"
+            >Page Replacement Algorithms</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/implementation-issues">Implementation Issues</a>
+        </li>
+        <li>
+          <a href="/part-two/segmentation">Segmentation</a>
+        </li>
+      </ul>
+
+      <p>
+        All in all, exposing physical memory to processes has several major
+        drawbacks. First, if user programs can address every byte of memory,
+        they can easily trash the operating system, intentionally or by
+        accident,
+      </p>
+
+      <p>
+        This problem exists even if only one user program (application) is
+        running. Second, with this model, it is difficult to have multiple
+        programs running at once (taking turns, if there is only one CPU).
+      </p>
+      <p>
+        On personal computers, it is common to have several programs open at
+        once (a word processor, an email program, a Web browser), one of them
+        having the current focus, but the others being reactivated at the click
+        of a mouse. Since this situation is difficult to achieve when there is
+        no abstraction from physical memory, something had to be done.
+      </p>
+
+      <p>
+        Two problems have to be solved to allow multiple applications to be in
+        memory at the same time without interfering with each other: protection
+        and relocation
+      </p>
+
+      <p>
+        Just as the process concept creates a kind of abstract CPU to run
+        programs, the address space creates a kind of abstract memory for
+        programs to live in. An address space is the set of addresses that a
+        process can use to address memory. Each process has its own address
+        space, independent of those belonging to other processes (except in some
+        special circumstances where processes want to share their address
+        spaces).
+      </p>
+
+      <p>
+        Address spaces do not have to be numeric. The set of .com Internet
+        domains is also an address space. This address space consists of all the
+        strings of length 2 to 63 characters that can be made using letters,
+        numbers, and hyphens, followed by .com.
+      </p>
+      <p>
+        Somewhat harder is how to give each program its own address space, so
+        address 28 in one program means a different physical location than
+        address 28 in another program.
+      </p>
+      <p>
+        Below we will discuss a simple way that used to be common but has fallen
+        into disuse due to the ability to put much more complicated (and better)
+        schemes on modern CPU chips.
+      </p>
+
+      <h4>Base and Limit Registers</h4>
+      <p>
+        This simple solution uses a particularly simple version of dynamic
+        relocation. What it does is map each process’ address space onto a
+        different part of physical memory in a simple way.
+      </p>
+      <p>
+        The idea was to equip each CPU with two special hardware registers,
+        usually called the base and limit registers.
+      </p>
+      <p>
+        When these registers are used, programs are loaded into consecutive
+        memory locations wherever there is room and without relocation during
+        loading.
+      </p>
+      <p>
+        When a process is run, the base register is loaded with the physical
+        address where its program begins in memory and the limit register is
+        loaded with the length of the program.
+      </p>
+      <p>
+        Every time a process references memory, either to fetch an instruction
+        or read or write a data word, the CPU hardware automatically adds the
+        base value to the address generated by the process before sending the
+        address out on the memory bus. Simultaneously, it checks whether the
+        address offered is equal to or greater than the value in the limit
+        register, in which case a fault is generated and the access is aborted.
+      </p>
+      <p>
+        Using base and limit registers is an easy way to give each process its
+        own private address space because every memory address generated
+        automatically has the base-register contents added to it before being
+        sent to memory. In many implementations, the base and limit registers
+        are protected in such a way that only the operating system can modify
+        them.
+      </p>
+      <p>
+        A disadvantage of relocation using base and limit registers is the need
+        to perform an addition and a comparison on every memory reference.
+        Comparisons can be done fast, but additions are slow due to
+        carry-propagation time unless special addition circuits are used.
+      </p>
+
+      <h4>Swapping</h4>
+      <p>
+        If the physical memory of the computer is large enough to hold all the
+        processes, the schemes described so far will more or less do. But in
+        practice, the total amount of RAM needed by all the processes is often
+        much more than can fit in memory.
+      </p>
+      <p>
+        Two general approaches to dealing with memory overload have been
+        developed over the years.
+      </p>
+      <p>
+        The simplest strategy, called <strong>swapping</strong>, consists of
+        bringing in each process in its entirety, running it for a while, then
+        putting it back on the disk.
+      </p>
+      <p>
+        Idle processes are mostly stored on disk, so they do not take up any
+        memory when they are not running (although some of them wake up
+        periodically to do their work, then go to sleep again).
+      </p>
+      <p>
+        The other strategy, called <strong>virtual memory</strong>, allows
+        programs to run even when they are only partially in main memory.
+      </p>
+      <p>
+        When swapping creates multiple holes in memory, it is possible to
+        combine them all into one big one by moving all the processes downward
+        as far as possible. This technique is known as memory compaction. It is
+        usually not done because it requires a lot of CPU time.
+      </p>
+      <p>
+        If a hole is adjacent to the process, it can be allocated and the
+        process allowed to grow into the hole. On the other hand, if the process
+        is adjacent to another process, the growing process will either have to
+        be moved to a hole in memory large enough for it, or one or more
+        processes will have to be swapped out to create a large enough hole.
+      </p>
+      <p>
+        If a process cannot grow in memory and the swap area on the disk is
+        full, the process will have to suspended.
+      </p>
+      <p>
+        If it is expected that most processes will grow as they run (dynamically
+        allocate memory), it is probably a good idea to allocate a little extra
+        memory whenever a process is swapped in or moved, to reduce the overhead
+        associated with moving or swapping processes that no longer fit in their
+        allocated memory.
+      </p>
+      <p>
+        However, when swapping processes to disk, only the memory actually in
+        use should be swapped; it is wasteful to swap the extra memory as well.
+      </p>
+
+      <h4>Managing Free Memory</h4>
+      <p>
+        When memory is assigned dynamically, the operating system must manage
+        it. In general terms, there are two ways to keep track of memory usage:
+        bitmaps and free lists.
+      </p>
+
+      <h5>Memory Management with Bitmaps</h5>
+      <p>
+        With a bitmap, memory is divided into allocation units as small as a few
+        words and as large as several kilobytes.
+      </p>
+      <p>
+        Corresponding to each allocation unit is a bit in the bitmap, which is 0
+        if the unit is free and 1 if it is occupied (or vice versa).
+      </p>
+      <p>
+        A bitmap provides a simple way to keep track of memory words in a fixed
+        amount of memory because the size of the bitmap depends only on the size
+        of memory and the size of the allocation
+      </p>
+
+      <h5>Memory Mnagement with Linked Lists</h5>
+      <p>
+        Another way of keeping track of memory is to maintain a linked list of
+        allocated and free memory segments, where a segment either contains a
+        process or is an empty hole between two processes.
+      </p>
+      <p>
+        When the processes and holes are kept on a list sorted by address,
+        several algorithms can be used to allocate memory for a created process
+        (or an existing process being swapped in from disk). We assume that the
+        memory manager knows how much memory to allocate.
+      </p>
+      <p>
+        The simplest algorithm is <strong>first fit</strong>. The memory manager
+        scans along the list of segments until it finds a hole that is big
+        enough. The hole is then broken up into two pieces, one for the process
+        and one for the unused memory, except in the statistically unlikely case
+        of an exact fit. First fit is a fast algorithm because it searches as
+        little as possible.
+      </p>
+      <p>
+        A minor variation of first fit is <strong>next fit</strong>. It works
+        the same way as first fit, except that it keeps track of where it is
+        whenever it finds a suitable hole. The next time it is called to find a
+        hole, it starts searching the list from the place where it left off last
+        time, instead of always at the beginning, as first fit does.
+      </p>
+      <p>
+        Another well-known and widely used algorithm is
+        <strong>best fit</strong>. Best fit searches the entire list, from
+        beginning to end, and takes the smallest hole that is adequate. Rather
+        than breaking up a big hole that might be needed later, best fit tries
+        to find a hole that is close to the actual size needed, to best match
+        the request and the available holes.
+      </p>
+      <p>
+        Yet another allocation algorithm is quick fit, which maintains separate
+        lists for some of the more common sizes requested.
+      </p>
+
+      <a class="end-link" href="/part-two/virtual-memory"
+        >Next chapter: Virtual Memory
+      </a>
+    </article>
+  </body>
+</html>

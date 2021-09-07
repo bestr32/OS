@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a class="link-active" href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Processes & Threads</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a class="link-active" href="/part-one/processes">Processes</a>
+        </li>
+        <li>
+          <a href="/part-one/threads">Threads</a>
+        </li>
+        <li>
+          <a href="/part-one/interprocess-communication"
+            >Interprocess Communication</a
+          >
+        </li>
+        <li>
+          <a href="/part-one/scheduling">Scheduling</a>
+        </li>
+      </ul>
+
+      <p>
+        All modern computers often do several things at the same time. People
+        used to working with computers may not be fully aware of this fact, so a
+        few examples may make the point clearer.
+      </p>
+
+      <p>
+        First consider a Web server. Requests come in from all over asking for
+        Web pages. When a request comes in, the server checks to see if the page
+        needed is in the cache. If it is, it is sent back; if it is not, a disk
+        request is started to fetch it. However, from the CPU’s perspective,
+        disk requests take eternity.
+      </p>
+      <p>
+        While waiting for a disk request to complete, many more requests may
+        come in.
+      </p>
+      <p>
+        Clearly some way is needed to model and control this concurrency.
+        Processes (and especially threads) can help here.
+      </p>
+      <p>
+        In any multiprogramming system, the CPU switches from process to process
+        quickly, running each for tens or hundreds of milliseconds. While,
+        strictly speaking, at any one instant the CPU is running only one
+        process, in the course of 1 second it may work on several of them,
+        giving the illusion of parallelism. Sometimes people speak of
+        <strong>pseudoparallelism</strong> in this context, to contrast it with
+        the true hardware parallelism of <strong>multiprocessor</strong> systems
+        (which have two or more CPUs sharing the same physical memory).
+      </p>
+
+      <h3>The Process Model</h3>
+      <p>
+        In this model, all the runnable software on the computer, sometimes
+        including the operating system, is organized into a number of sequential
+        processes, or just processes for short.
+      </p>
+      <p>
+        A process is just an instance of an executing program, including the
+        current values of the program counter, registers, and variables.
+        Conceptually, each process has its own virtual CPU. In reality, of
+        course, the real CPU switches back and forth from process to process,
+        but to understand the system, it is much easier to think about a
+        collection of processes running in (pseudo) parallel than to try to keep
+        track of how the CPU switches from program to program.
+      </p>
+      <p>
+        This rapid switching back and forth is called
+        <strong>multiprogramming</strong>.
+      </p>
+
+      <h4>Difference between a Process and a Program</h4>
+      <p>
+        It is crucial to understand the difference between a process and a
+        program. A program is a static entity, the code that sits on the disk
+        waiting to be run.
+      </p>
+      <p>
+        A process is a dynamic entity, it is the program in execution. Hence, we
+        care about its state, how it is being executed, how much memory is
+        allocated to it, etc.
+      </p>
+      <p>If a program is running twice, it counts as two processes.</p>
+
+      <h4>Process Creation</h4>
+      <p>
+        Operating systems need some way to create processes. In very simple
+        systems, or in systems designed for running only a single application
+        (e.g., the controller in a microwave oven), it may be possible to have
+        all the processes that will ev er be needed be present when the system
+        comes up. In general-purpose systems, however, some way is needed to
+        create and terminate processes as needed during operation.
+      </p>
+      <p>Four principal events cause processes to be created:</p>
+      <ol>
+        <li>System initialization</li>
+        <li>
+          Execution of a process-creation system call by a running process.
+        </li>
+        <li>A user requrest to create a new process</li>
+        <li>Initiation of a batch job.</li>
+      </ol>
+      <p>
+        When an OS is booted, numeroues processes are created. Some of these are
+        foreground (interact with human), others run in the background (called
+        <strong>daemons</strong>).
+      </p>
+
+      <h4>Process Termination</h4>
+      <p>
+        After a process has been created, it starts running and does whatever
+        its job is. However, nothing lasts forever, not even processes. Sooner
+        or later the new process will terminate, usually due to one of the
+        following conditions:
+      </p>
+      <ol>
+        <li>Normal exit (voluntary).</li>
+        <li>Error exit (voluntary)</li>
+        <li>Fatal error (involuntary).</li>
+        <li>Killed by another process (involuntary).</li>
+      </ol>
+      <p>
+        Most processes terminate because they have done their work (normal
+        exit).
+      </p>
+      <p>Error exits happen because of bad parameters.</p>
+      <p>
+        Fatal errors happen because of a program bug (division by 0, illegal
+        instruction, etc.)
+      </p>
+      <p>
+        And a different process might execute a system call to kill some other
+        process.
+      </p>
+
+      <h4>Process Hierarchies</h4>
+      <p>
+        In some systems, when a process creates another process, the parent
+        process and child process continue to be associated in certain ways. The
+        child process can itself create more processes, forming a process
+        hierarchy.
+      </p>
+
+      <h4>Process States</h4>
+      <p>A process may be in any of three states:</p>
+      <ol>
+        <li>Running. Currently has CPU time.</li>
+        <li>Ready. Ready to run but waiting for the CPU (no CPU available).</li>
+        <li>
+          Blocked. Unable to run until some external event happens (I/O
+          operation).
+        </li>
+      </ol>
+
+      <h4>Implementation of Processes</h4>
+      <p>
+        The OS maintains a table (an array of structures) called the
+        <strong>process table</strong> with one entry per process.
+      </p>
+      <p>This entry is called a <strong>process control block</strong>.</p>
+      <p>
+        It contains important information about the process' state, its program
+        counter, stack pointer, memory allocation, the status of its open files
+        and everything else about the process that must be saved when the
+        process is switched from running to ready or blocked state so that it
+        can be restarted later as if it had never been stopped.
+      </p>
+
+      <a class="end-link" href="/part-one/threads">Next chapter: Threads</a>
+    </article>
+  </body>
+</html>

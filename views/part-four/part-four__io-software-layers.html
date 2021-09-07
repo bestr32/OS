@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a class="link-active" href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Input/Output</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-four/io-hardware">Principles of I/O Hardware</a>
+        </li>
+        <li>
+          <a href="/part-four/io-software">Principles of I/O Software</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-four/io-software-layers"
+            >I/O Software Layers</a
+          >
+        </li>
+        <li>
+          <a href="/part-four/disks">Disks</a>
+        </li>
+        <li>
+          <a href="/part-four/clocks">Clocks</a>
+        </li>
+        <li>
+          <a href="/part-four/ui-kmm">UIs: Keyboard, Mouse, Monitor</a>
+        </li>
+      </ul>
+
+      <h3>I/O Software Layers</h3>
+      <p>
+        I/O software is typically organized in four layers. Each layer has a
+        well-defined function to perform, as well as an interface to the
+        adjacent layers.
+      </p>
+      <p>Highest to lowest:</p>
+      <ol>
+        <li>User-level I/O software</li>
+        <li>Device-independent operating system software</li>
+        <li>Device drivers</li>
+        <li>Interrupt handlers</li>
+      </ol>
+
+      <h4>Interrupt Handlers</h4>
+      <p>
+        While programmed I/O is occasionally useful, for most I/O, interrupts
+        are an unpleasant fact of life and cannot be avoided.
+      </p>
+      <p>
+        They should be hidden away, deep in the bowels of the operating system,
+        so that as little of the operating system as possible knows about them.
+      </p>
+      <p>
+        The best way to hide them is to have the driver starting an I/O
+        operation block until the I/O has completed and the interrupt occurs.
+      </p>
+
+      <h4>Device Drivers</h4>
+      <p>
+        each I/O device attached to a computer needs some device-specific code
+        for controlling it. This code, called the
+        <strong>device driver</strong>, is generally written by the device’s
+        manufacturer and delivered along with the device.
+      </p>
+
+      <h4>Device-Independent I/O Software</h4>
+      <p>
+        Although some of the I/O software is device specific, other parts of it
+        are device independent.
+      </p>
+      <p>The device-independent software usually does:</p>
+      <ol>
+        <li>Uniform interfacing for device drivers.</li>
+        <li>Buffering.</li>
+        <li>Error reporting</li>
+        <li>Allocating and releasing dedicated devices.</li>
+        <li>Providing a device-independent block size.</li>
+      </ol>
+
+      <h4>User-Space I/O Software</h4>
+      <p>
+        Although most of the I/O software is within the operating system, a
+        small portion of it consists of libraries linked together with user
+        programs, and even whole programs running outside the kernel. System
+        calls, including the I/O system calls, are normally made by library
+        procedures.
+      </p>
+      <p>
+        Not all user-level I/O software consists of library procedures. Another
+        important category is the spooling system. <strong>Spooling</strong> is
+        a way of dealing with dedicated I/O devices in a multiprogramming
+        system.
+      </p>
+
+      <a class="end-link" href="/part-four/io-disks">Next chapter: Disks</a>
+      <a class="end-link" href="/part-five">Next part: Deadlocks</a>
+    </article>
+  </body>
+</html>

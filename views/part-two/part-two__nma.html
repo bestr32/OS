@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a class="link-active" href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Memory Management</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a class="link-active" href="/part-two/no-memory-abstraction"
+            >No Memory Abstraction</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/address-spaces"
+            >A Memory Abstraction: Address Spaces</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/virtual-memory">Virtual Memory</a>
+        </li>
+        <li>
+          <a href="/part-two/page-replacement-algorithms"
+            >Page Replacement Algorithms</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/implementation-issues">Implementation Issues</a>
+        </li>
+        <li>
+          <a href="/part-two/segmentation">Segmentation</a>
+        </li>
+      </ul>
+
+      <p>
+        The simplest memory abstraction is to have no abstraction at all. Early
+        mainframe computers (before 1960), early minicomputers (before 1970),
+        and early personal computers (before 1980) had no memory abstraction.
+        Every program simply saw the physical memory.
+      </p>
+      <p>
+        The model of memory presented to the programmer was simply physical
+        memory, a set of addresses from 0 to some maximum, each address
+        corresponding to a cell containing some number of bits, commonly eight.
+      </p>
+      <p>
+        Under these conditions, it was not possible to have two running programs
+        in memory at the same time. If the first program wrote a new value to,
+        say, location 2000, this would erase whatever value the second program
+        was storing there. Nothing would work and both programs would crash
+        almost immediately.
+      </p>
+      <p>
+        Even with the model of memory being just physical memory, sev eral
+        options are possible.
+      </p>
+      <p>
+        The operating system may be at the bottom of memory in RAM (Random
+        Access Memory), or it may be in ROM (Read-Only Memory) at the top of
+        memory
+      </p>
+      <p>
+        One way to get some parallelism in a system with no memory abstraction
+        is to program with multiple threads. Since all threads in a process are
+        supposed to see the same memory image, the fact that they are forced to
+        is not a problem. While this idea works, it is of limited use since what
+        people often want is unrelated programs to be running at the same time,
+        something the threads abstraction does not provide. Furthermore, any
+        system that is so primitive as to provide no memory abstraction is
+        unlikely to provide a threads abstraction.
+      </p>
+      <p>
+        However, even with no memory abstraction, it is possible to run multiple
+        programs at the same time. What the operating system has to do is save
+        the entire contents of memory to a disk file, then bring in and run the
+        next program. As long as there is only one program at a time in memory,
+        there are no conflicts. This concept (swapping) will be discussed below.
+      </p>
+      <p>
+        With the addition of some special hardware, it is possible to run
+        multiple programs concurrently, even without swapping.
+      </p>
+
+
+      <a class="end-link" href="/part-two/address-spaces"
+        >Next chapter: A Memory Abstraction: Address Spaces
+      </a>
+    </article>
+  </body>
+</html>

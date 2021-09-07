@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a class="link-active" href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Input/Output</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a class="link-active" href="/part-four/io-hardware"
+            >Principles of I/O Hardware</a
+          >
+        </li>
+        <li>
+          <a href="/part-four/io-software">Principles of I/O Software</a>
+        </li>
+        <li>
+          <a href="/part-four/io-software-layers">I/O Software Layers</a>
+        </li>
+        <li>
+          <a href="/part-four/io-disks">Disks</a>
+        </li>
+        <li>
+          <a href="/part-four/io-clocks">Clocks</a>
+        </li>
+        <li>
+          <a href="/part-four/io-ui-kmm">UIs: Keyboard, Mouse, Monitor</a>
+        </li>
+      </ul>
+
+      <h3>I/O Devices</h3>
+      <p>I/O devices can be divided into two categories:</p>
+      <ol>
+        <li>
+          Block devices - stores info in fixed-size blocks, each one with its
+          own address. Transfers are in units of blocks. Hard disks, Blu-ray
+          discs, USB sticks.
+        </li>
+        <li>
+          Character devices - delivers or accepts a stream of characters. Not
+          addressable and doesn't have a seek operation. Printers, network
+          interfaces, mice.
+        </li>
+      </ol>
+
+      <h4>Device Controllers</h4>
+      <p>
+        I/O units often consist of a mechanical component and an electronic
+        component.
+      </p>
+      <p>
+        The electronic component is called the
+        <strong>device controller</strong> or <strong>adapter</strong>. On
+        personal computers, it often takes the form of a chip on the parentboard
+        or a printed circuit card that can be inserted into a (PCIe) expansion
+        slot.
+      </p>
+      <p>
+        The controller card usually has a connector on it, into which a cable
+        leading to the device itself can be plugged. Many controllers can handle
+        two, four, or even eight identical devices.
+      </p>
+      <p>
+        The controller’s job is to convert the serial bit stream into a block of
+        bytes and perform any error correction necessary.
+      </p>
+
+      <h4>Memory-Mapped I/O</h4>
+      <p>
+        Each controller has a few registers that are used for communicating with
+        the CPU. By writing into these registers, the operating system can
+        command the device to deliver data, accept data, switch itself on or
+        off, or otherwise perform some action.
+      </p>
+      <p>
+        By reading from these registers, the operating system can learn what the
+        device’s state is, whether it is prepared to accept a new command, and
+        so on.
+      </p>
+      <p>
+        In addition to the control registers, many devices have a data buffer
+        that the operating system can read and write. For example, a common way
+        for computers to display pixels on the screen is to have a video RAM,
+        which is basically just a data buffer, available for programs or the
+        operating system to write into.
+      </p>
+      <p>
+        The issue thus arises of how the CPU communicates with the control
+        registers and also with the device data buffers. Two alternatives exist.
+      </p>
+      <ol>
+        <li>
+          Each control register is assigned an <strong>I/O port</strong> number
+          (8-bit or 16-bit integer). The set of all the I/O ports form the
+          <strong>I/O port space</strong>, which is protected.
+        </li>
+        <li>
+          All the control registers are mapped into the memory space. Each
+          control register is assigned a unique memory address to which no
+          memory is assigned. <strong>Memory-mapped I/O</strong>
+        </li>
+      </ol>
+
+      <h4>Direct Memory Acces</h4>
+      <p>
+        No matter whether a CPU does or does not have memory-mapped I/O, it
+        needs to address the device controllers to exchange data with them.
+      </p>
+      <p>
+        The CPU can request data from an I/O controller one byte at a time, but
+        doing so wastes the CPU’s time, so a different scheme, called
+        <strong>DMA</strong> (<strong>Direct Memory Access</strong>) is often
+        used.
+      </p>
+
+      <p>
+        The operating system can use only DMA if the hardware has a DMA
+        controller, which most systems do.
+      </p>
+      <p>
+        Not all computers use DMA. The argument against it is that the main CPU
+        is often far faster than the DMA controller and can do the job much
+        faster (when the limiting factor is not the speed of the I/O device).
+      </p>
+
+      <h4>Interrupts (Revisited)</h4>
+      <p>
+        At the hardware level, interrupts work as follows. When an I/O device
+        has finished the work given to it, it causes an interrupt (assuming that
+        interrupts have been enabled by the operating system). It does this by
+        asserting a signal on a bus line that it has been assigned. This signal
+        is detected by the interrupt controller chip on the parentboard, which
+        then decides what to do.
+      </p>
+      <p>
+        If no other interrupts are pending, the interrupt controller handles the
+        interrupt immediately. Howev er, if another interrupt is in progress, or
+        another device has made a simultaneous request on a higher-priority
+        interrupt request line on the bus, the device is just ignored for the
+        moment.
+      </p>
+      <p>
+        To handle the interrupt, the controller puts a number on the address
+        lines specifying which device wants attention and asserts a signal to
+        interrupt the CPU.
+      </p>
+      <p>
+        The interrupt signal causes the CPU to stop what it is doing and start
+        doing something else. The number on the address lines is used as an
+        index into a table called the <strong>interrupt vector</strong> to fetch
+        a new program counter.
+      </p>
+      <p>
+        This program counter points to the start of the corresponding
+        interrupt-service procedure.
+      </p>
+      <p>
+        An interrupt that leaves the machine in a well-defined state is called a
+        <strong>precise interrupt</strong>. It has four properties:
+      </p>
+      <ol>
+        <li>The program counter is saved in a known place.</li>
+        <li>
+          All instructions before the one pointed to by the program counter have
+          completed.
+        </li>
+        <li>
+          No instruction beyond the one pointed to by the program counter has
+          finished.
+        </li>
+        <li>
+          The execution state of the instruction pointed to by the program
+          counter is known.
+        </li>
+      </ol>
+      <p>
+        An interrupt that does not meet these requirements is called an
+        <strong>imprecise interrupt</strong> and makes life most unpleasant for
+        the operating system writer, who now has to figure out what has happened
+        and what still has to happen.
+      </p>
+
+      <a class="end-link" href="/part-four/io-software"
+        >Next chapter: Principles of I/O Software</a
+      >
+    </article>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a class="link-active" href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Deadlocks</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-five/resources">Resources</a>
+        </li>
+        <li>
+          <a href="/part-five/deadlocks-intro">Introduction to Deadlocks</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-five/detection-recovery"
+            >Deadlock Detection & Recovery</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/avoidance">Deadlock Avoidance</a>
+        </li>
+        <li>
+          <a href="/part-five/prevention">Deadlock Prevention</a>
+        </li>
+        <li>
+          <a href="/part-five/other-issues">Other Issues</a>
+        </li>
+      </ul>
+
+      <p>A second technique is detection and recovery.</p>
+      <p>
+        When this technique is used, the system does not attempt to prevent
+        deadlocks from occurring. Instead, it lets them occur, tries to detect
+        when this happens, and then takes some action to recover after the fact.
+        In this section we will look at some of the ways deadlocks can be
+        detected and some of the ways recovery from them can be handled.
+      </p>
+
+      <h4>Detection with One Resource of Each Type</h4>
+      <p>
+        If there is only one resource of each type (e.g. only 1 printer), we can
+        construct a resource graph. If this graph contains one or more cycles, a
+        deadlock exists
+      </p>
+      <p>
+        Any process that is part of a cycle is deadlocked. If no cycles exist,
+        the system is not deadlocked.
+      </p>
+
+      <h4>Detection with Multiple Resources of Each Type</h4>
+      <p>
+        When multiple copies of some of the resources exist, a different
+        approach is needed to detect deadlocks.
+      </p>
+      <p>
+        For this we use a matrix-based algorithm for detecting deadlock among n
+        processes.
+      </p>
+
+      <h4>Recovery from Deadlock</h4>
+      <p>
+        We have a couple of options. The first is
+        <strong>Recovery through preemption</strong> by temporarily taking a
+        resource away from its current owner and giving it to another process.
+      </p>
+      <p>
+        Recovering this way is frequently difficult or impossible. Choosing the
+        process to suspend depends largely on which ones have resources that can
+        easily be taken back.
+      </p>
+      <p>
+        Another method is <strong>Recovery through rollback</strong>, by having
+        processes checkpointed periodically - have its state written to a file
+        so that it can be restarted later.
+      </p>
+      <p>
+        A third method is <strong>Recovery through Killing Processes</strong> - crudest but simplest way is to kill one or more processes.
+      </p>
+
+      <a class="end-link" href="/part-five/avoidance"
+        >Next chapter: Deadlock Avoidance</a
+      >
+    </article>
+  </body>
+</html>

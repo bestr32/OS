@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a class="link-active" href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Memory Management</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-two/no-memory-abstraction">No Memory Abstraction</a>
+        </li>
+        <li>
+          <a href="/part-two/address-spaces"
+            >A Memory Abstraction: Address Spaces</a
+          >
+        </li>
+        <li>
+          <a class="link-active" href="/part-two/virtual-memory"
+            >Virtual Memory</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/page-replacement-algorithms"
+            >Page Replacement Algorithms</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/implementation-issues">Implementation Issues</a>
+        </li>
+        <li>
+          <a href="/part-two/segmentation">Segmentation</a>
+        </li>
+      </ul>
+
+      <p>
+        While base and limit registers can be used to create the abstraction of
+        address spaces, there is another problem that has to be solved: managing
+        bloatware.
+      </p>
+      <p class="quote">
+        While memory sizes are increasing rapidly, software sizes are increasing
+        much faster.
+      </p>
+
+      <p>
+        As a consequence of these developments, there is a need to run programs
+        that are too large to fit in memory, and there is certainly a need to
+        have systems that can support multiple programs running simultaneously,
+        each of which fits in memory but all of which collectively exceed
+        memory. Swapping is not an attractive option, since a typical SATA disk
+        has a peak transfer rate of several hundreds of MB/sec, which means it
+        takes seconds to swap out a 1-GB program and the same to swap in a 1-GB
+        program.
+      </p>
+      <p>
+        The problem of programs larger than memory has been around since the
+        beginning of computing, albeit in limited areas, such as science and
+        engineering (simulating the creation of the universe or even simulating
+        a new aircraft takes a lot of memory).
+      </p>
+      <p>
+        A solution adopted in the 1960s was to split programs into little
+        pieces, called <strong>overlays</strong>. When a program started, all
+        that was loaded into memory was the overlay manager, which immediately
+        loaded and ran overlay 0. When it was done, it would tell the overlay
+        manager to load overlay 1, either above overlay 0 in memory (if there
+        was space for it) or on top of overlay 0 (if there was no space). Some
+        overlay systems were highly complex, allowing many overlays in memory at
+        once. The overlays were kept on the disk and swapped in and out of
+        memory by the overlay manager.
+      </p>
+      <p>
+        Although the actual work of swapping overlays in and out was done by the
+        operating system, the work of splitting the program into pieces had to
+        be done manually by the programmer. Splitting large programs up into
+        small, modular pieces was time consuming, boring, and error prone. Few
+        programmers were good at this. It did not take long before someone
+        thought of a way to turn the whole job over to the computer.
+      </p>
+      <p>
+        The method that was devised (Fotheringham, 1961) has come to be known as
+        <strong>virtual memory</strong>. The basic idea behind virtual memory is
+        that each program has its own address space, which is broken up into
+        chunks called <strong>pages</strong>.
+      </p>
+      <p>
+        Each page is a contiguous range of addresses. These pages are mapped
+        onto physical memory, but not all pages have to be in physical memory at
+        the same time to run the program.
+      </p>
+      <p>
+        When the program references a part of its address space that is in
+        physical memory, the hardware performs the necessary mapping on the fly.
+      </p>
+      <p>
+        When the program references a part of its address space that is not in
+        physical memory, the operating system is alerted to go get the missing
+        piece and re-execute the instruction that failed.
+      </p>
+      <p>
+        In a sense, virtual memory is a generalization of the
+        base-and-limit-register idea.
+      </p>
+      <p>
+        With virtual memory, instead of having separate relocation for just the
+        text and data segments, the entire address space can be mapped onto
+        physical memory in fairly small units.
+      </p>
+      <p>
+        Virtual memory works just fine in a multiprogramming system, with bits
+        and pieces of many programs in memory at once. While a program is
+        waiting for pieces of itself to be read in, the CPU can be given to
+        another process.
+      </p>
+
+      <h4>Paging</h4>
+      <p>
+        Most virtual memory systems use a technique called
+        <strong>paging</strong>.
+      </p>
+      <p>On any computer, programs reference a set of memory addresses.</p>
+      <p>
+        Addresses can be generated using indexing, base registers, segment
+        registers, and other ways.
+      </p>
+      <p>
+        These program-generated addresses are called
+        <strong>virtual addresses</strong> and form the
+        <strong>virtual address space</strong>.
+      </p>
+      <p>
+        On computers without virtual memory, the virtual address is put directly
+        on the memory bus and causes the physical memory word with the same
+        address to be read or written.
+      </p>
+      <p>
+        When virtual memory is used, the virtual addresses do not go directly to
+        the memory bus. Instead, they go to an <strong>MMU</strong> (<strong
+          >Memory Management Unit</strong
+        >) that maps the virtual addresses onto the physical memory addresses
+      </p>
+      <p>
+        The virtual address space consists of fixed-size units called pages. The
+        corresponding units in the physical memory are called
+        <strong>page frames</strong>.
+      </p>
+      <p>The pages and page frames are generally the same size.</p>
+      <p>
+        Transfers between RAM and disk are always in whole pages. Many
+        processors support multiple page sizes that can be mixed and matched as
+        the operating system sees fit.
+      </p>
+
+      <h4>Page Tables</h4>
+      <p>
+        In a simple implementation, the mapping of virtual addresses onto
+        physical addresses can be summarized as follows: the virtual address is
+        split into a virtual page number (high-order bits) and an offset
+        (low-order bits). For example, with a 16-bit address and a 4-KB page
+        size, the upper 4 bits could specify one of the 16 virtual pages and the
+        lower 12 bits would then specify the byte offset (0 to 4095) within the
+        selected page. However a split with 3 or 5 or some other number of bits
+        for the page is also possible. Different splits imply different page
+        sizes.
+      </p>
+      <p>
+        The virtual page number is used as an index into the page table to find
+        the entry for that virtual page. From the page table entry, the page
+        frame number (if any) is found. The page frame number is attached to the
+        high-order end of the offset, replacing the virtual page number, to form
+        a physical address that can be sent to the memory. Thus, the purpose of
+        the page table is to map virtual pages onto page frames
+      </p>
+
+      <h4>Speeding up Paging</h4>
+      <p>In any paging system, two major issues must be faced:</p>
+      <ol>
+        <li>
+          The mapping from virtual address to physical address must be fast.
+        </li>
+        <li>
+          If the virtual address space is large, the page table will be large.
+        </li>
+      </ol>
+
+      <p>
+        The first point is a consequence of the fact that the
+        virtual-to-physical mapping must be done on every memory reference. All
+        instructions must ultimately come from memory and many of them reference
+        operands in memory as well.
+      </p>
+      <p>
+        Consequently, it is necessary to make one, two, or sometimes more page
+        table references per instruction.
+      </p>
+
+      <p>
+        A page fault (sometimes called #PF, PF or hard fault) is a type of
+        exception raised by computer hardware when a running program accesses a
+        memory page that is not currently mapped by the memory management unit
+        (MMU) into the virtual address space of a process.
+      </p>
+      <p>
+        When a page fault occurs, the operating system has to choose a page to
+        evict (remove from memory) to make room for the incoming page. If the
+        page to be removed has been modified while in memory, it must be
+        rewritten to the disk to bring the disk copy up to date.
+      </p>
+      <p>Optimal: Not implementable, but useful as a benchmark</p>
+      <p>NRU (Not Recently Used): Very crude approximation of LRU</p>
+      <p>FIFO (First-In, First-Out): Might throw out important pages</p>
+      <p>Second chance: Big improvement over FIFO</p>
+      <p>Clock: Realistic</p>
+      <p>
+        LRU (Least Recently Used): Excellent, but difficult to implement exactly
+      </p>
+      <p>NFU (Not Frequently Used): Fairly crude approximation to LRU</p>
+      <p>Aging: Efficient algorithm that approximates LRU well</p>
+      <p>Working set: Somewhat expensive to implement</p>
+      <p>WSClock: Good efficient algorithm</p>
+
+      <a class="end-link" href="/part-two/segmentation">Next chapter: Segmentation </a>
+    </article>
+  </body>
+</html>

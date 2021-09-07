@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a class="link-active" href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Deadlocks</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-five/resources">Resources</a>
+        </li>
+        <li>
+          <a href="/part-five/deadlocks-intro">Introduction to Deadlocks</a>
+        </li>
+        <li>
+          <a href="/part-five/detection-recovery"
+            >Deadlock Detection & Recovery</a
+          >
+        </li>
+        <li>
+          <a class="link-active" href="/part-five/avoidance"
+            >Deadlock Avoidance</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/prevention">Deadlock Prevention</a>
+        </li>
+        <li>
+          <a href="/part-five/other-issues">Other Issues</a>
+        </li>
+      </ul>
+
+      <p>
+        In deadlock detection, we assumed that when a process asks for
+        resources, it asks for them all at once.
+      </p>
+      <p>In most systems, however, resources are requested one at a time.</p>
+
+      <p>
+        The system must be able to decide whether granting a resource is safe or
+        not and make the allocation only when it is safe.
+      </p>
+      <p>
+        Is there an algorithm that can always avoid deadlock by making the right
+        choice all the time? The answer is a qualified yes—we can avoid
+        deadlocks, but only if certain information is available in advance.
+      </p>
+
+      <h4>Resource Trajectories</h4>
+      <p>
+        The main algorithms for deadlock avoidance are based on the concept of
+        safe states.
+      </p>
+      <p>
+        A state is said to be safe if there is some scheduling order in which
+        every process can run to completion even if all of them suddenly request
+        their maximum number of resources immediately.
+      </p>
+
+      <h4>The Banker's Algorithm</h4>
+      <p>
+        The <strong>banker's algorithm</strong> - A scheduling algorithm that
+        can avoid deadlocks and is an extension of the deadlock detection
+        algorithm.
+      </p>
+      <p>
+        The banker’s algorithm considers each request as it occurs, seeing
+        whether granting it leads to a safe state. If it does, the request is
+        granted; otherwise, it is postponed until later. To see if a state is
+        safe, the banker checks to see if he has enough resources to satisfy
+        some customer. If so, those loans are assumed to be repaid, and the
+        customer now closest to the limit is checked, and so on. If all loans
+        can eventually be repaid, the state is safe and the initial request can
+        be granted.
+      </p>
+
+      <p>
+        The banker’s algorithm can be generalized to handle multiple resources.
+      </p>
+
+      <a class="end-link" href="/part-five/prevention"
+        >Next chapter: Deadlock Prevention</a
+      >
+    </article>
+  </body>
+</html>

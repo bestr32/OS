@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a class="link-active" href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Deadlocks</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-five/resources">Resources</a>
+        </li>
+        <li>
+          <a href="/part-five/deadlocks-intro">Introduction to Deadlocks</a>
+        </li>
+        <li>
+          <a href="/part-five/detection-recovery"
+            >Deadlock Detection & Recovery</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/avoidance">Deadlock Avoidance</a>
+        </li>
+        <li>
+          <a href="/part-five/prevention">Deadlock Prevention</a>
+        </li>
+        <li>
+          <a href="/part-five/other-issues">Other Issues</a>
+        </li>
+      </ul>
+
+      <p>
+        Computer systems are full of resources that can be used only by one
+        process at a time.
+      </p>
+      <p>
+        Having two processes simultaneously writing to the printer leads to
+        gibberish. Having two processes using the same file-system table slot
+        invariably will lead to a corrupted file system. Consequently, all
+        operating systems have the ability to (temporarily) grant a process
+        exclusive access to certain resources.
+      </p>
+      <p>
+        For many applications, a process needs exclusive access to not one
+        resource, but several.
+      </p>
+
+      <p>
+        A process requests resources; and if the resources are not available at
+        that time, the process enters a waiting state. Sometimes, a waiting
+        process is never again able to change state, because the resources it
+        has requested are held by other waiting processes.
+      </p>
+      <p>
+        <strong>Deadlock</strong> is defined as the permanent blocking of a set
+        of processes that compete for system resources.
+      </p>
+
+      <a class="end-link" href="/part-five/resources"
+        >Next chapter: Resources</a
+      >
+    </article>
+  </body>
+</html>

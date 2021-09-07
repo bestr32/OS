@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a class="link-active" href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Memory Management</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-two/no-memory-abstraction">No Memory Abstraction</a>
+        </li>
+        <li>
+          <a href="/part-two/address-spaces"
+            >A Memory Abstraction: Address Spaces</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/virtual-memory">Virtual Memory</a>
+        </li>
+        <li>
+          <a href="/part-two/page-replacement-algorithms"
+            >Page Replacement Algorithms</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/implementation-issues">Implementation Issues</a>
+        </li>
+        <li>
+          <a href="/part-two/segmentation">Segmentation</a>
+        </li>
+      </ul>
+
+      <p>
+        Main memory (RAM) is an important resource that must be very carefully
+        managed.
+      </p>
+      <p>Parkinson's Law:</p>
+      <p class="quote">
+        Programs expand to fill the memory available to hold them.
+      </p>
+      <p>
+        What every programmer would like is a private, infinitely large,
+        infinitely fast memory that is also nonvolatile, that is, does not lose
+        its contents when the electric power is switched off.
+      </p>
+      <p>
+        While we are at it, why not make it inexpensive, too? Unfortunately,
+        technology does not provide such memories at present. Maybe you will
+        discover how to do it.
+      </p>
+      <p>
+        What is the second choice? Over the years, people discovered the concept
+        of a <strong>memory hierarchy</strong>, in which computers have a few
+        meg abytes of very fast, expensive, volatile cache memory, a few
+        gigabytes of medium-speed, medium-priced, volatile main memory, and a
+        few terabytes of slow, cheap, nonvolatile magnetic or solid-state disk
+        storage, not to mention removable storage, such as DVDs and USB sticks.
+        It is the job of the operating system to abstract this hierarchy into a
+        useful model and then manage the abstraction.
+      </p>
+      <p>
+        The part of the operating system that manages (part of) the memory
+        hierarchy is called the <strong>memory manager</strong>.
+      </p>
+      <p>
+        Its job is to efficiently manage memory: keep track of which parts of
+        memory are in use, allocate memory to processes when they need it, and
+        deallocate it when they are done.
+      </p>
+      <p>
+        We will first look at the simplest possible schemes and then gradually
+        progress to more and more elaborate ones.
+      </p>
+
+      <a class="end-link" href="/part-two/no-memory-abstraction"
+        >Next chapter: No Memory Abstraction</a
+      >
+    </article>
+  </body>
+</html>

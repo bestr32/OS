@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a class="link-active" href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Input/Output</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-four/io-hardware">Principles of I/O Hardware</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-four/io-software"
+            >Principles of I/O Software</a
+          >
+        </li>
+        <li>
+          <a href="/part-four/io-software-layers">I/O Software Layers</a>
+        </li>
+        <li>
+          <a href="/part-four/io-disks">Disks</a>
+        </li>
+        <li>
+          <a href="/part-four/io-clocks">Clocks</a>
+        </li>
+        <li>
+          <a href="/part-four/io-ui-kmm">UIs: Keyboard, Mouse, Monitor</a>
+        </li>
+      </ul>
+
+      <h3>Goals of the I/O Software</h3>
+      <p>
+        A key concept in the design of I/O software is known as
+        <strong>device independence</strong>.
+      </p>
+      <p>
+        We should be able to write programs that can access any I/O device
+        without having to specify the advice in advance.
+      </p>
+      <p>
+        Closely related to device independence is the goal of
+        <strong>uniform naming</strong>.
+      </p>
+      <p>
+        The name of a file or a device should simply be a string or an integer
+        and not depend on the device in any way.
+      </p>
+      <p>
+        Another important issue for I/O software is
+        <strong>error handling</strong>.
+      </p>
+      <p>
+        In general, errors should be handled as close to the hardware as
+        possible.
+      </p>
+      <p>
+        Anther important issue is that of
+        <strong>synchronous</strong> (blocking) vs <strong>asynchronous</strong>
+        (interrupt-driven) transfers. Most physical I/O is asynchronous - the
+        CPU starts the transfer and goes off to do something else until the
+        interrupt arrives.
+      </p>
+      <p>
+        User programs are much easier to write if the I/O operations are
+        blocking.
+      </p>
+      <p>Another issue for the I/O software is <strong>buffering</strong>.</p>
+      <p>
+        When a packet comes in off the network, the OS doesn't know where to put
+        it until it has stored the packet somewhere and examined it.
+      </p>
+      <p>
+        Often data that come off a device cannot be stored directly in their
+        final destination. Buffering involves considerable copying and often has
+        a major impact on I/O performance.
+      </p>
+
+      <p>
+        There are three fundamentally different ways that I/O can be performed.
+      </p>
+      <ol>
+        <li>Programmed I/O</li>
+        <li>Interrupt-driven I/O</li>
+        <li>I/O using DMA</li>
+      </ol>
+
+      <h4>Programmed I/O</h4>
+      <p>This method is the simplest and it has the CPU do all the work.</p>
+      <p>
+        Programmed I/O is simple but has the disadvantage of tying up the CPU
+        full time until all the I/O is done.
+      </p>
+
+      <h4>Interrupt-Driven I/O</h4>
+      <p>
+        The way to allow the CPU to do something else while waiting for the
+        printer to become ready is to use interrupts.
+      </p>
+
+      <h4>I/O Using DMA</h4>
+      <p>
+        An obvious disadvantage of interrupt-driven I/O is that an interrupt
+        occurs on every character.
+      </p>
+      <p>
+        Interrupts take time, so this scheme wastes a certain amount of CPU
+        time. A solution is to use DMA.
+      </p>
+      <p>
+        Here the idea is to let the DMA controller feed the characters to the
+        printer one at time, without the CPU being bothered. In essence, DMA is
+        programmed I/O, only with the DMA controller doing all the work, instead
+        of the main CPU.
+      </p>
+      <p>
+        This strategy requires special hardware (the DMA controller) but frees
+        up the CPU during the I/O to do other work.
+      </p>
+
+      <a class="end-link" href="/part-four/io-software-layers"
+        >Next chapter: I/O Software Layers</a
+      >
+    </article>
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a class="link-active" href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Deadlocks</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-five/resources">Resources</a>
+        </li>
+        <li>
+          <a href="/part-five/deadlocks-intro">Introduction to Deadlocks</a>
+        </li>
+        <li>
+          <a href="/part-five/detection-recovery"
+            >Deadlock Detection & Recovery</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/avoidance">Deadlock Avoidance</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-five/prevention"
+            >Deadlock Prevention</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/other-issues">Other Issues</a>
+        </li>
+      </ul>
+
+      <p>
+        Having seen that deadlock avoidance is essentially impossible, because
+        it requires information about future requests, which is not known, how
+        do real systems avoid deadlock?
+      </p>
+      <p>
+        The answer is to go back to the four conditions that must be met for a
+        deadlock to occur. If we can ensure that at least one of these
+        conditions is never satisfied, then deadlocks will be structurally
+        impossible.
+      </p>
+
+      <h4>Attacking the Mutual-Exclusion Condition</h4>
+      <p>
+        If no resource were ever assigned exclusively to a single process, we
+        would never have deadlocks.
+      </p>
+      <p>
+        For data, the simplest method is to make data read only, so that
+        processes can use the data concurrently. However, it is equally clear
+        that allowing two processes to write on the printer at the same time
+        will lead to chaos.
+      </p>
+      <p>
+        By spooling printer output, several processes can generate output at the
+        same time.
+      </p>
+      <p>
+        Avoid assigning a resource unless absolutely necessary, and try to make
+        sure that as few processes as possible may actually claim the resource.
+      </p>
+
+      <h4>Attacking the Hold-and-Wait Condition</h4>
+      <p>
+        If we can prevent processes that hold resources from waiting for more
+        resources, we can eliminate deadlocks.
+      </p>
+      <p>
+        One way to achieve this goal is to require all processes to request all
+        their resources before starting execution.
+      </p>
+      <p>
+        If ev erything is available, the process will be allocated whatever it
+        needs and can run to completion. If one or more resources are busy,
+        nothing will be allocated and the process will just wait.
+      </p>
+      <p>
+        An immediate problem with this approach is that many processes do not
+        know how many resources they will need until they hav e started running.
+        In fact, if they knew, the banker’s algorithm could be used.
+      </p>
+      <p>
+        Another problem is that resources will not be used optimally with this
+        approach.
+      </p>
+      <p>
+        A slightly different way to break the hold-and-wait condition is to
+        require a process requesting a resource to first temporarily release all
+        the resources it currently holds. Then it tries to get everything it
+        needs all at once.
+      </p>
+
+      <h4>Attacking the No-Preemption Condition</h4>
+      <p>
+        Attacking the third condition (no preemption) is also a possibility. If
+        a process has been assigned the printer and is in the middle of printing
+        its output, forcibly taking away the printer because a needed plotter is
+        not available is tricky at best and impossible at worst.
+      </p>
+      <p>However, some resources can be virtualized to avoid this situation.</p>
+      <p>
+        Spooling printer output to the disk and allowing only the printer daemon
+        access to the real printer eliminates deadlocks involving the printer,
+        although it creates a potential for deadlock over disk space. With large
+        disks though, running out of disk space is unlikely.
+      </p>
+      <p>
+        However, not all resources can be virtualized like this. For example,
+        records in databases or tables inside the operating system must be
+        locked to be used and therein lies the potential for deadlock.
+      </p>
+
+      <h4>Attacking the Circular Wait Condition</h4>
+      <p>The circular wait can be eliminated in several ways.</p>
+      <p>
+        One way is simply to have a rule saying that a process is entitled only
+        to a single resource at any moment.
+      </p>
+      <p>
+        If it needs a second one, it must release the first one. For a process
+        that needs to copy a huge file from a tape to a printer, this
+        restriction is unacceptable.
+      </p>
+      <p>
+        Another way to avoid the circular wait is to provide a global numbering
+        of all the resources, so that processes can request resources whenever
+        they want to, but all requests must be made in numerical order.
+      </p>
+
+      Summary:
+
+      <table>
+        <tr>
+          <th>Condition</th>
+          <th>Approach</th>
+        </tr>
+        <tr>
+          <td>Mutual exclusion</td>
+          <td>Spool everything</td>
+        </tr>
+        <tr>
+          <td>Hold and Wait</td>
+          <td>Request all resources initially</td>
+        </tr>
+        <tr>
+          <td>No preemption</td>
+          <td>Take resources away</td>
+        </tr>
+        <tr>
+          <td>Circular wait</td>
+          <td>Order resources numerically</td>
+        </tr>
+      </table>
+
+      <a class="end-link" href="/part-five/other-issues"
+        >Next chapter: Other Issues</a
+      >
+    </article>
+  </body>
+</html>

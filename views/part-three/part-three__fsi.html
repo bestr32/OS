@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a class="link-active" href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>File Systems</h2>
+
+      <ul class="blog-list">
+        <li><a href="/part-three/files">Files</a></li>
+        <li>
+          <a href="/part-three/directories">Directories</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-three/file-system-implementation"
+            >File-System Implementation</a
+          >
+        </li>
+        <li>
+          <a href="/part-three/file-system-management-optimization"
+            >File-System Management & Optimization</a
+          >
+        </li>
+      </ul>
+
+      <h3>Files From the Designer's Perspective</h3>
+      <p>
+        Users are concerned with how files are named, what operations are
+        allowed on them, what the directory tree looks like, and similar
+        interface issues. Implementors are interested in how files and
+        directories are stored, how disk space is managed, and how to make
+        everything work efficiently and reliably.
+      </p>
+      <p>
+        In the following sections we will examine a number of these areas to see
+        what the issues and trade-offs are.
+      </p>
+
+      <h4>File-System Layout</h4>
+      <p>
+        File systems are stored on disks. Most disks can be divided up into one
+        or more partitions, with independent file systems on each partition.
+      </p>
+      <p>
+        Sector 0 of the disk is called the <strong>MBR</strong> (<strong
+          >Master Boot Record</strong
+        >) and is used to boot the computer.
+      </p>
+      <p>
+        The end of the MBR contains the partition table. This table gives the
+        starting and ending addresses of each partition.
+      </p>
+      <p>
+        One of the partitions in the table is marked as active. When the
+        computer is booted, the BIOS reads in and executes the MBR. The first
+        thing the MBR program does is locate the active partition, read in its
+        first block, which is called the <strong>boot block</strong>, and
+        execute it.
+      </p>
+      <p>
+        The program in the boot block loads the operating system contained in
+        that partition.
+      </p>
+      <p>
+        For uniformity, every partition starts with a boot block, even if it
+        does not contain a bootable operating system. Besides, it might contain
+        one in the future.
+      </p>
+      <p>
+        Other than starting with a boot block, the layout of a disk partition
+        varies a lot from file system to file system
+      </p>
+      <p>Often the file system will contain some of the following items:</p>
+      <p>
+        The first one is the <strong>superblock</strong>. It contains all the
+        key parameters about the file system and is read into memory when the
+        computer is booted or the file system is first touched.
+      </p>
+      <p>
+        Typical information in the superblock includes a magic number to
+        identify the file-system type, the number of blocks in the file system
+        and other key administrative information.
+      </p>
+      <p>
+        Next might come information about free blocks in the file system, for
+        example in the form of a bitmap or a list of pointers. This might be
+        followed by the i-nodes, an array of data structures, one per file,
+        telling all about the file.
+      </p>
+      <p>
+        After that might come the root directory, which contains the top of the
+        file-system tree. Finally, the remainder of the disk contains all the
+        other directories and files.
+      </p>
+
+      <h4>Implementing Files</h4>
+      <p>
+        Probably the most important issue in implementing file storage is
+        keeping track of which disk blocks go with which file. Various methods
+        are used in different operating systems.
+      </p>
+      <h5>Contiguous Allocation</h5>
+      <p>
+        The simplest allocation scheme is to store each file as a contiguous run
+        of disk blocks.
+      </p>
+      <p>
+        Thus on a disk with 1-KB blocks, a 50-KB file would be allocated 50
+        consecutive blocks.
+      </p>
+      <p>
+        Contiguous disk-space allocation has two significant advantages. First,
+        it is simple to implement because keeping track of where a file’s blocks
+        are is reduced to remembering two numbers: the disk address of the first
+        block and the number of blocks in the file.
+      </p>
+      <p>
+        Second, the read performance is excellent because the entire file can be
+        read from the disk in a single operation.
+      </p>
+      <p>
+        Unfortunately, contiguous allocation also has a very serious drawback:
+        over the course of time, the disk becomes fragmented.
+      </p>
+      <p>
+        When a file is removed, its blocks are naturally freed, leaving a run of
+        free blocks on the disk.
+      </p>
+      <p>As a result, the disk ultimately consists of files and holes.</p>
+      <p>
+        Initially, this fragmentation is not a problem, since each new file can
+        be written at the end of disk, following the previous one. However,
+        eventually the disk will fill up and it will become necessary to either
+        compact the disk, which is prohibitively expensive, or to reuse the free
+        space in the holes. Reusing the space requires maintaining a list of
+        holes, which is doable. However, when a new file is to be created, it is
+        necessary to know its final size in order to choose a hole of the
+        correct size to place it in.
+      </p>
+      <p>
+        However, there is one situation in which contiguous allocation is
+        feasible and, in fact, still used: on CD-ROMs. Here all the file sizes
+        are known in advance and will never change during subsequent use of the
+        CD-ROM file system.
+      </p>
+
+      <h5>Linked-List Allocation</h5>
+      <p>
+        The second method for storing files is to keep each one as a linked list
+        of disk blocks.
+      </p>
+      <p>
+        The first word (16 bits) of each block is used as a pointer to the next
+        one. The rest of the block is for data.
+      </p>
+
+      <p>
+        Unlike contiguous allocation, every disk block can be used in this
+        method. No space is lost to disk fragmentation (except for internal
+        fragmentation in the last block).
+      </p>
+      <p>
+        On the other hand, although reading a file sequentially is
+        straightforward, random access is extremely slow.
+      </p>
+      <p>
+        Also, the amount of data storage in a block is no longer a power of two
+        because the pointer takes up a few bytes.
+      </p>
+
+      <h5>Linked-List Allocation Using a Table in Memory</h5>
+      <p>
+        Both disadvantages of the linked-list allocation can be eliminated by
+        taking the pointer word from each disk block and putting it in a table
+        in memory.
+      </p>
+      <p>
+        Such a table in main memory is called a <strong>FAT</strong> (<strong
+          >File Allocation Table</strong
+        >).
+      </p>
+      <p>
+        Using this organization, the entire block is available for data.
+        Furthermore, random access is much easier.
+      </p>
+      <p>
+        Although the chain must still be followed to find a given offset within
+        the file, the chain is entirely in memory, so it can be followed without
+        making any disk references.
+      </p>
+      <p>
+        The primary disadvantage of this method is that the entire table must be
+        in memory all the time to make it work. With a 1-TB disk and a 1-KB
+        block size, the table needs 1 billion entries, one for each of the 1
+        billion disk blocks.
+      </p>
+      <p>
+        Thus the table will take up 3 GB or 2.4 GB of main memory all the time,
+        depending on whether the system is optimized for space or time. Not
+        wildly practical. Clearly the FAT idea does not scale well to large
+        disks.
+      </p>
+
+      <h5>I-nodes</h5>
+      <p>
+        Our last method for keeping track of which blocks belong to which file
+        is to associate with each file a data structure called an
+        <strong>i-node</strong>
+        (<strong>index-node</strong>), which lists the attributes and disk
+        addresses of the file's blocks.
+      </p>
+      <p>
+        The big advantage of this scheme over linked files using an in-memory
+        table is that the i-node need be in memory only when the corresponding
+        file is open.
+      </p>
+      <p>
+        The array holding the i-nodes is usually far smaller than the space
+        occupied by the file table.
+      </p>
+      <p>
+        The i-node scheme requires an array in memory whose size is proportional
+        to the maximum number of files that may be open at once. It does not
+        matter if the disk is 100 GB, 1000 GB, or 10,000 GB.
+      </p>
+      <p>
+        One problem with i-nodes is that if each one has room for a fixed number
+        of disk addresses, what happens when a file grows beyond this limit? One
+        solution is to reserve the last disk address not for a data block, but
+        instead for the address of a block containing more disk-block addresses.
+      </p>
+
+      <h4>Implementing Directories</h4>
+      <p>
+        Before a file can be read, it must be opened. When a file is opened, the
+        operating system uses the path name supplied by the user to locate the
+        directory entry on the disk.
+      </p>
+      <p>
+        The directory entry provides the information needed to find the disk
+        blocks. Depending on the system, this information may be the disk
+        address of the entire file (with contiguous allocation), the number of
+        the first block (both linked-list schemes), or the number of the i-node.
+      </p>
+      <p>
+        In all cases, the main function of the directory system is to map the
+        ASCII name of the file onto the information needed to locate the data.
+      </p>
+      <p>
+        A closely related issue is where the attributes should be stored. Every
+        file system maintains various file attributes, such as each file’s owner
+        and creation time, and they must be stored somewhere.
+      </p>
+      <p>
+        One obvious possibility is to store them directly in the directory
+        entry. Some systems do precisely that.
+      </p>
+      <p>
+        For systems that use i-nodes, another possibility for storing the
+        attributes is in the i-nodes, rather than in the directory entries. In
+        that case, the directory entry can be shorter: just a file name and an
+        i-node number.
+      </p>
+      <p>
+        In all of the designs so far, directories are searched linearly from
+        beginning to end when a file name has to be looked up. For extremely
+        long directories, linear searching can be slow. One way to speed up the
+        search is to use a hash table in each directory.
+      </p>
+      <p>
+        Using a hash table has the advantage of much faster lookup, but the
+        disadvantage of more complex administration. It is only really a serious
+        candidate in systems where it is expected that directories will
+        routinely contain hundreds or thousands of files.
+      </p>
+      <p>
+        A different way to speed up searching large directories is to cache the
+        results of searches. Before starting a search, a check is first made to
+        see if the file name is in the cache. If so, it can be located
+        immediately. Of course, caching only works if a relatively small number
+        of files comprise the majority of the lookups.
+      </p>
+
+      <h4>Shared Files</h4>
+      <p>
+        When several users are working together on a project, they often need to
+        share files. As a result, it is often convenient for a shared file to
+        appear simultaneously in different directories belonging to different
+        users.
+      </p>
+      <p>
+        The connection between a directory and a shared file is called a
+        <strong>link</strong>.
+      </p>
+      <p>
+        The file system itself is now a <strong>Directed Acyclic Graph</strong>,
+        or <strong>DAG</strong>, rather than a tree. Having the file system be a
+        DAG complicates maintenance.
+      </p>
+      <p>
+        Sharing files is convenient, but it also introduces some problems. To
+        start with, if directories really do contain disk addresses, then a copy
+        of the disk addresses will have to be made in B’s directory when the
+        file is linked. If either B or C subsequently appends to the file, the
+        new blocks will be listed only in the directory of the user doing the
+        append. The changes will not be visible to the other user, thus
+        defeating the purpose of sharing.
+      </p>
+      <p>
+        This problem can be solved in two ways. In the first solution, disk
+        blocks are not listed in directories, but in a little data structure
+        associated with the file itself. The directories would then point just
+        to the little data structure. This is the approach used in UNIX (where
+        the little data structure is the i-node).
+      </p>
+      <p>
+        In the second solution, B links to one of C’s files by having the system
+        create a new file, of type LINK, and entering that file in B’s
+        directory. The new file contains just the path name of the file to which
+        it is linked. When B reads from the linked file, the operating system
+        sees that the file being read from is of type LINK, looks up the name of
+        the file, and reads that file. This approach is called symbolic linking,
+        to contrast it with traditional (hard) linking.
+      </p>
+
+      <h4>Log-Structured File System</h4>
+      <p>
+        Changes in technology are putting pressure on current file systems. In
+        particular, CPUs keep getting faster, disks are becoming much bigger and
+        cheaper (but not much faster), and memories are growing exponentially in
+        size. The one parameter that is not improving by leaps and bounds is
+        disk seek time (except for solid-state disks, which have no seek time).
+      </p>
+      <p>
+        The combination of these factors means that a performance bottleneck is
+        arising in many file systems. Research done at Berkeley attempted to
+        alleviate this problem by designing a completely new kind of file
+        system, LFS (the Log-structured File System).
+      </p>
+      <p>
+        The idea that drove the LFS design is that as CPUs get faster and RAM
+        memories get larger, disk caches are also increasing rapidly.
+        Consequently, it is now possible to satisfy a very substantial fraction
+        of all read requests directly from the file-system cache, with no disk
+        access needed. It follows from this observation that in the future, most
+        disk accesses will be writes, so the read-ahead mechanism used in some
+        file systems to fetch blocks before they are needed no longer gains much
+        performance.
+      </p>
+      <p>
+        To make matters worse, in most file systems, writes are done in very
+        small chunks. Small writes are highly inefficient, since a 50-μsec disk
+        write is often preceded by a 10-msec seek and a 4-msec rotational delay.
+        With these parameters, disk efficiency drops to a fraction of 1%.
+      </p>
+      <p>
+        From this reasoning, the LFS designers decided to reimplement the UNIX
+        file system in such a way as to achieve the full bandwidth of the disk,
+        even in the face of a workload consisting in large part of small random
+        writes. The basic idea is to structure the entire disk as a great big
+        log.
+      </p>
+
+      <h4>Journaling File Systems</h4>
+      <p>
+        While log-structured file systems are an interesting idea, they are not
+        widely used, in part due to their being highly incompatible with
+        existing file systems. Nevertheless, one of the ideas inherent in them,
+        robustness in the face of failure, can be easily applied to more
+        conventional file systems.
+      </p>
+      <p>
+        The basic idea here is to keep a log of what the file system is going to
+        do before it does it, so that if the system crashes before it can do its
+        planned work, upon rebooting the system can look in the log to see what
+        was going on at the time of the crash and finish the job. Such file
+        systems, called journaling file systems, are actually in use.
+      </p>
+      <p>
+        To make journaling work, the logged operations must be idempotent, which
+        means they can be repeated as often as necessary without harm.
+      </p>
+
+      <h4>Virtual File System</h4>
+      <p>
+        Many different file systems are in use—often on the same computer—even
+        for the same operating system.
+      </p>
+      <p>
+        A Windows system may have a main NTFS file system, but also a legacy FAT
+        -32 or FAT -16 drive or partition that contains old, but still needed,
+        data, and from time to time a flash drive, an old CD-ROM or a DVD (each
+        with its own unique file system) may be required as well.
+      </p>
+      <p>
+        Windows handles these disparate file systems by identifying each one
+        with a different drive letter, as in C:, D:, etc. When a process opens a
+        file, the drive letter is explicitly or implicitly present so Windows
+        knows which file system to pass the request to. There is no attempt to
+        integrate heterogeneous file systems into a unified whole.
+      </p>
+      <p>
+        In contrast, all modern UNIX systems make a very serious attempt to
+        integrate multiple file systems into a single structure.
+      </p>
+      <p>
+        Most UNIX systems have used the concept of a
+        <strong>VFS</strong> (<strong>virtual file system</strong>) to try to
+        integrate multiple file systems into an orderly structure. The key idea
+        is to abstract out that part of the file system that is common to all
+        file systems and put that code in a separate layer that calls the
+        underlying concrete file systems to actually manage the data.
+      </p>
+
+      <a class="end-link" href="/part-three/file-system-management-optimization"
+        >Next chapter: File-System Management & Optimization</a
+      >
+    </article>
+  </body>
+</html>

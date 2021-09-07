@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a class="link-active" href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>File Systems</h2>
+
+      <ul class="blog-list">
+        <li><a class="link-active" href="/part-three/files">Files</a></li>
+        <li><a href="/part-three/directories">Directories</a></li>
+        <li>
+          <a href="/part-three/file-system-implementation"
+            >File-System Implementation</a
+          >
+        </li>
+        <li>
+          <a href="/part-three/file-system-management-optimization"
+            >File-System Management & Optimization</a
+          >
+        </li>
+      </ul>
+
+      <p>
+        <strong>Files</strong> are logical units of information created by
+        processes. A disk will usually contain thousands or even millions of
+        them, each one independent of the others.
+      </p>
+
+      <p>
+        Processes can read existing files and create new ones if need be.
+        Information stored in files must be <strong>persistent</strong>, that
+        is, not be affected by process creation and termination.
+      </p>
+
+      <p>
+        Files are managed by the operating system. How they are structured,
+        named, accessed, used, protected, implemented, and managed are major
+        topics in operating system design.
+      </p>
+      <p>
+        As a whole, that part of the operating system dealing with files is
+        known as the <strong>file system</strong>.
+      </p>
+
+      <div class="quote">
+        <p>
+          From the user’s standpoint, the most important aspect of a file system
+          is how it appears, in other words, what constitutes a file, how files
+          are named and protected, what operations are allowed on files, and so
+          on.
+        </p>
+        <p>
+          The details of whether linked lists or bitmaps are used to keep track
+          of free storage and how many sectors there are in a logical disk block
+          are of no interest, although they are of great importance to the
+          designers of the file system.
+        </p>
+      </div>
+
+      <h3>Files From the User's Perspective</h3>
+
+      <h4>File Naming</h4>
+      <p>
+        A file is an abstraction mechanism. It provides a way to store
+        information on the disk and read it back later.
+      </p>
+
+      <p>
+        This must be done in such a way as to shield the user from the details
+        of how and where the information is stored, and how the disks actually
+        work.
+      </p>
+
+      <p>
+        When a process creates a file, it gives the file a name. When the
+        process terminates, the file continues to exist and can be accessed by
+        other processes using its name.
+      </p>
+
+      <p>
+        Many operating systems support two-part file names, with the two parts
+        separated by a period, as in <i>prog.c</i>. The part following the
+        period is called the <strong>file extension</strong> and usually
+        indicates something about the file.
+      </p>
+
+      <h4>File Structure</h4>
+      <p>Files can be structured in several ways:</p>
+      <ul>
+        <li>
+          Unstructured sequence of bytes. All the OS sees are bytes - it does
+          not care what is in the file. Used by UNIX & Windows.
+        </li>
+        <li>
+          Sequence of fixed-length records, each record with some internal
+          structure.
+        </li>
+        <li>
+          Tree of records, each containing a key field in a fixed position in
+          the record. Used by large mainframe PCs.
+        </li>
+      </ul>
+
+      <h4>File Types</h4>
+      <p>
+        Many operating systems support several types of files. UNIX & Windows
+        have regular files and directories.
+      </p>
+      <p>
+        <strong>Regular files</strong> are the ones that contain user
+        information.
+      </p>
+      <p>
+        <strong>Directories</strong> are system files for maintaining the
+        structure of the FS.
+      </p>
+      <p>
+        <strong>Character special files</strong> are related to input/output and
+        used to model serial I/O devices.
+      </p>
+      <p><strong>Block special files</strong> are used to model disks.</p>
+
+      <br />
+
+      <p>Regular files are generally either ASCII files or binary files.</p>
+      <p>
+        ASCII files consist of lines of text. In some systems each line is
+        terminated by a carriage return character. In others, the line feed
+        character is used. Some systems (e.g., Windows) use both. Lines need not
+        all be of the same length.
+      </p>
+      <p>
+        The great advantage of ASCII files is that they can be displayed and
+        printed as is, and they can be edited with any text editor. Furthermore,
+        if large numbers of programs use ASCII files for input and output, it is
+        easy to connect the output of one program to the input of another, as in
+        shell pipelines.
+      </p>
+      <p>
+        Binary files - simply means that they are not ASCII files. Listing them
+        on a printer gives a listing full of random junk, although they have an
+        internal structure known to programs that use them.
+      </p>
+
+      <p>
+        Every operating system must recognize at least one file type: its own
+        executable file; some recognize more.
+      </p>
+
+      <h4>File Access</h4>
+      <p>
+        Early operating systems provided only one kind of file access:
+        <strong> sequential access</strong>.
+      </p>
+      <p>
+        In these systems, a process could read all the bytes or records in a
+        file in order, starting at the beginning, but could not skip around and
+        read them out of order.
+      </p>
+      <p>
+        Sequential files could be rewound, however, so they could be read as
+        often as needed. Sequential files were convenient when the storage
+        medium was magnetic tape rather than disk.
+      </p>
+      <p>
+        When disks came into use for storing files, it became possible to read
+        the bytes or records of a file out of order, or to access records by key
+        rather than by position.
+      </p>
+      <p>
+        Files whose bytes or records can be read in any order are called
+        <strong>random-access files</strong>. They are required by many
+        applications.
+      </p>
+
+      <h4>File Attributes</h4>
+      <p>
+        Every file has a name and its data. In addition, all OS associate other
+        info with each file (e.g. date&time last modified, file size)
+      </p>
+      <p>
+        These extra items are the file's <strong>attributes</strong> (metadata).
+      </p>
+
+      <h4>File Operations</h4>
+      <p>
+        Files exist to store information and allow it to be retrieved later.
+        OS's provide different operations to allow storage and retrieval.
+      </p>
+      <ol>
+        <li>
+          Create. The file is created with no data. Announces that the file is
+          coming.
+        </li>
+        <li>
+          Delete. When the file is no longer needed, it has to be deleted to
+          free up disk.
+        </li>
+        <li>Open. Before using a file, a process must open it.</li>
+        <li>
+          Close. When all the accesses are finished, the file should be closed
+          to free up internal table space.
+        </li>
+        <li>
+          Read. Data are read from file. Usually, the bytes come from the
+          current position.
+        </li>
+        <li>
+          Write. Data are written to the file again, usually at the current
+          position.
+        </li>
+        <li>Append, Seek, Get Attributes, Set Attributes, Rename.</li>
+      </ol>
+
+      <a class="end-link" href="/part-three/directories"
+        >Next chapter: Directories</a
+      >
+    </article>
+  </body>
+</html>

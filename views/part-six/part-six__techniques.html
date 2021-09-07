@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li>
+            <a class="link-active" href="/part-six">Virtualization & Cloud</a>
+          </li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Virtualization & Cloud</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-six/requirements">Requirements for Virtualization</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-six/hypervisors"
+            >Type 1 & Type 2 Hypervisors</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/techniques"
+            >Techniques for Efficient Virtualization</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/microkernels"
+            >Are Hypervisors Microkernels Done Right?</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/memory-virtualization">Memory Virtualization</a>
+        </li>
+        <li><a href="/part-six/io-virtualization">I/O Virtualization</a></li>
+        <li><a href="/part-six/clouds">Clouds</a></li>
+      </ul>
+
+      <p>
+        Virtualizability and performance are important issues, so let us examine
+        them more closely.
+      </p>
+      <p>
+        If we have a type 1 hypervisor, it runs on bare metal. The virtual
+        machine runs as a user process in user mode and as such is not allowed
+        to execute sensitive instructions.
+      </p>
+      <p>
+        The virtual machine runs a guest operating system that thinks it is in
+        kernel mode (although it is not) - <strong>virtual kernel mode</strong>.
+      </p>
+      <p>
+        The virtual machine also runs user processes, which think they are in
+        user mode (and really are in user mode).
+      </p>
+      <p>
+        What happens when the guest operating system (which thinks it is in
+        kernel mode) executes an instruction that is allowed only when the CPU
+        really is in kernel mode?
+      </p>
+      <p>
+        On CPUs with VT (virtualization technology), when the guest operating
+        system executes a sensitive instruction, a trap to the hypervisor
+        occurs.
+      </p>
+      <p>
+        The hypervisor can then inspect the instruction to see if it was issued
+        by the guest operating system in the virtual machine or by a user
+        program in the virtual machine.
+      </p>
+      <p>
+        In the former case, it arranges for the instruction to be carried out;
+        in the latter case, it emulates what the real hardware would do when
+        confronted with a sensitive instruction executed in user mode.
+      </p>
+
+      <p>
+        Suppose, for instance, that the guest is running when an interrupt
+        arrives from an external device. Since a type 2 hypervisor depends on
+        the host’s device drivers to handle the interrupt, it needs to
+        reconfigure the hardware completely to run the host operating system
+        code. When the device driver runs, it finds everything just as it
+        expected it to be. The hypervisor behaves just like teenagers throwing a
+        party while their parents are away. It is okay to rearrange the
+        furniture completely, as long as they put it back exactly as they found
+        it before the parents come home. Going from a hardware configuration for
+        the host kernel to a configuration for the guest operating system is
+        known as a world switch.
+      </p>
+
+      <a class="end-link" href="/part-six/microkernels"
+        >Next chapter: Are Hypervisors Microkernels Done Right?</a
+      >
+
+      <a href="/part-six/clouds" class="end-link"> Next chapter: Clouds</a>
+    </article>
+  </body>
+</html>

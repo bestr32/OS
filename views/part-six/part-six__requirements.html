@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li>
+            <a class="link-active" href="/part-six">Virtualization & Cloud</a>
+          </li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Virtualization & Cloud</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a class="link-active" href="/part-six/requirements"
+            >Requirements for Virtualization</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/hypervisors">Type 1 & Type 2 Hypervisors</a>
+        </li>
+        <li>
+          <a href="/part-six/techniques"
+            >Techniques for Efficient Virtualization</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/microkernels"
+            >Are Hypervisors Microkernels Done Right?</a
+          >
+        </li>
+        <li>
+          <a href="/part-six/memory-virtualization">Memory Virtualization</a>
+        </li>
+        <li><a href="/part-six/io-virtualization">I/O Virtualization</a></li>
+        <li><a href="/part-six/clouds">Clouds</a></li>
+      </ul>
+
+      <p>
+        It must be possible to boot virtual machines like real machines and
+        install arbitrary operating systems on them, just as can be done on the
+        real hardware.
+      </p>
+      <p>
+        It is the task of the hypervisors to provide this illusion and to do it
+        efficiently. They should score well in three dimensions:
+      </p>
+      <ol>
+        <li>
+          <strong>Safety:</strong> the hypervisor should have full control of
+          the virtualized resources.
+        </li>
+        <li>
+          <strong>Fidelity:</strong> the behavior of a program on a virtual
+          machine should be identical to that of the same program running on the
+          bare hardware.
+        </li>
+        <li>
+          <strong>Efficiency:</strong> much of the code in the virtual machine
+          should run without intervention by the hypervisor.
+        </li>
+      </ol>
+
+      <p>
+        An unquestionably safe way to execute the instructions is to consider
+        each instruction in turn in an interpreter (such as Bochs) and perform
+        exactly what is needed for that instruction.
+      </p>
+
+      <a class="end-link" href="/part-six/hypervisors"
+        >Next chapter: Type 1 & Type 2 Hypervisors</a
+      >
+    </article>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a class="link-active" href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Deadlocks</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-five/resources">Resources</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-five/deadlocks-intro"
+            >Introduction to Deadlocks</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/detection-recovery"
+            >Deadlock Detection & Recovery</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/avoidance">Deadlock Avoidance</a>
+        </li>
+        <li>
+          <a href="/part-five/prevention">Deadlock Prevention</a>
+        </li>
+        <li>
+          <a href="/part-five/other-issues">Other Issues</a>
+        </li>
+      </ul>
+
+      <p>A deadlock can be defined formally as follows:</p>
+      <p class="quote">
+        A set of processes is deadlocked if each process in the set is waiting
+        for an event that only another process in the set can cause.
+      </p>
+      <p>
+        Because all the processes are waiting, none of them will ever cause any
+        event that could wake up any of the other members of the set, and all
+        the processes continue to wait forever.
+      </p>
+
+      <h4>Conditions for Resource Deadlocks</h4>
+      <ol>
+        <li>
+          Mutual exclusion condition. Each resource is either currently assigned
+          to exactly one process or is available.
+        </li>
+        <li>
+          Hold-and-wait condition. Processes currently holding resources that
+          were granted earlier can request new resources.
+        </li>
+        <li>
+          No-preemption condition. Resources previously granted cannot be
+          forcibly taken away from a process.
+        </li>
+        <li>
+          Circular wait condition. There must be a circular list of two or more
+          processes, each of which is waiting for a resource held by the next
+          member of the chain.
+        </li>
+      </ol>
+      <p>
+        All four of these conditions must be present for a resource deadlock to
+        occur. If one of them is absent, no resource deadlock is possible.
+      </p>
+      <p>Four strategies are used for dealing with deadlocks:</p>
+      <ol>
+        <li>
+          Ostrich algorithm: ignore the problem. Maybe if you ignore it it will
+          ignore you.
+        </li>
+        <li>
+          Detection and recovery. Let them occur, detect them, take action.
+        </li>
+        <li>Dynamic avoidance by careful resource allocation.</li>
+        <li>
+          Prevention, by structurally negating one of the four conditions.
+        </li>
+      </ol>
+
+      <p>The simplest approach is the ostrich algorithm: stick your head in the sand and pretend there is no problem.</p>
+
+      <a class="end-link" href="/part-five/detection-recovery"
+        >Next chapter: Deadlocks Detection & Recovery</a
+      >
+    </article>
+  </body>
+</html>

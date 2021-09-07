@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a class="link-active" href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Memory Management</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a href="/part-two/no-memory-abstraction">No Memory Abstraction</a>
+        </li>
+        <li>
+          <a href="/part-two/address-spaces"
+            >A Memory Abstraction: Address Spaces</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/virtual-memory">Virtual Memory</a>
+        </li>
+        <li>
+          <a href="/part-two/page-replacement-algorithms"
+            >Page Replacement Algorithms</a
+          >
+        </li>
+        <li>
+          <a href="/part-two/implementation-issues">Implementation Issues</a>
+        </li>
+        <li>
+          <a class="link-active" href="/part-two/segmentation">Segmentation</a>
+        </li>
+      </ul>
+
+      <p>
+        The virtual memory discussed so far is one-dimensional because the
+        virtual addresses go from 0 to some maximum address, one address after
+        another. For many problems, having two or more separate virtual address
+        spaces may be much better than having only one.
+      </p>
+      <p>
+        A straightforward and quite general solution is to provide the machine
+        with many completely independent address spaces, which are called
+        <strong>segments</strong>. Each segment consists of a linear sequence of
+        addresses, starting at 0 and going up to some maximum value.
+      </p>
+      <p>
+        Because each segment constitutes a separate address space, different
+        segments can grow or shrink independently without affecting each other.
+      </p>
+      <p>
+        We emphasize here that a segment is a logical entity, which the
+        programmer is aw are of and uses as a logical entity. A segment might
+        contain a procedure, or an array, or a stack, or a collection of scalar
+        variables, but usually it does not contain a mixture of different types.
+      </p>
+
+      <p>
+        The implementation of segmentation differs from paging in an essential
+        way: pages are of fixed size and segments are not.
+      </p>
+
+      <p>
+        If the segments are large, it may be inconvenient, or even impossible,
+        to keep them in main memory in their entirety. This leads to the idea of
+        paging them, so that only those pages of a segment that are actually
+        needed have to be around.
+      </p>
+      <a class="end-link" href="/part-three"
+        >Next part: File Systems
+      </a>
+    </article>
+  </body>
+</html>

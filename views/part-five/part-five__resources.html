@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li>
+            <a href="/part-one">Processes & Threads</a>
+          </li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a class="link-active" href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>Deadlocks</h2>
+
+      <ul class="blog-list">
+        <li>
+          <a class="link-active" href="/part-five/resources">Resources</a>
+        </li>
+        <li>
+          <a href="/part-five/deadlocks-intro">Introduction to Deadlocks</a>
+        </li>
+        <li>
+          <a href="/part-five/detection-recovery"
+            >Deadlock Detection & Recovery</a
+          >
+        </li>
+        <li>
+          <a href="/part-five/avoidance">Deadlock Avoidance</a>
+        </li>
+        <li>
+          <a href="/part-five/prevention">Deadlock Prevention</a>
+        </li>
+        <li>
+          <a href="/part-five/other-issues">Other Issues</a>
+        </li>
+      </ul>
+
+      <p>
+        A major class of deadlocks involves resources to which some process has
+        been granted exclusive access. These resources include devices, data
+        records, files, and so forth. To make the discussion of deadlocks as
+        general as possible, we will refer to the objects granted as resources.
+      </p>
+      <p>
+        A resource can be a hardware device (e.g., a Blu-ray drive) or a piece
+        of information (e.g., a record in a database).
+      </p>
+      <p>
+        In short, a resource is anything that must be acquired, used, and
+        released over the course of time.
+      </p>
+
+      <h4>Preemptable and Nonpreemptable Resources</h4>
+      <p>Resources come in two types:</p>
+      <ol>
+        <li>
+          <strong>Preemptable resource</strong> - can be taken away from the
+          process owning it with no ill effects. Ex: Memory.
+        </li>
+        <li>
+          <strong>Nonpreemptable resource</strong> - cannot be taken away from
+          its current owner without potentially causing failure.
+        </li>
+      </ol>
+
+      <p>Deadlocks mainly involve nonpreemptable resources.</p>
+
+      <p>A process:</p>
+      <ol>
+        <li>Requests the resource.</li>
+        <li>Uses the resource.</li>
+        <li>Releases the resource.</li>
+      </ol>
+      <p>
+        If the resource is not available when requested, the requesting process
+        is forced to wait.
+      </p>
+      <p>
+        A process whose resource request has been denied will normally sit in a
+        loop requesting the resource, then sleeping, then trying again.
+      </p>
+
+      <a class="end-link" href="/part-five/deadlocks-intro"
+        >Next chapter: Introduction to deadlocks</a
+      >
+    </article>
+  </body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <ul class="part-list">
+          <li><a href="/part-one">Processes & Threads</a></li>
+          <li><a href="/part-two">Memory Management</a></li>
+          <li><a class="link-active" href="/part-three">File Systems</a></li>
+          <li><a href="/part-four">Input/Output</a></li>
+          <li><a href="/part-five">Deadlocks</a></li>
+          <li><a href="/part-six">Virtualization & Cloud</a></li>
+          <li><a href="/part-seven">Multi CPU System</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <article class="main">
+      <h2>File Systems</h2>
+
+      <ul class="blog-list">
+        <li><a href="/part-three/files">Files</a></li>
+        <li>
+          <a href="/part-three/directories">Directories</a>
+        </li>
+        <li>
+          <a href="/part-three/file-system-implementation"
+            >File-System Implementation</a
+          >
+        </li>
+        <li>
+          <a
+            class="link-active"
+            href="/part-three/file-system-management-optimization"
+            >File-System Management & Optimization</a
+          >
+        </li>
+      </ul>
+
+      <p>
+        Making the file system work is one thing; making it work efficiently and
+        robustly in real life is something quite different. In the following
+        sections we will look at some of the issues involved in managing disks.
+      </p>
+
+      <h4>Disk-Space Management</h4>
+      <p>
+        Files are normally stored on disk, so management of disk space is a
+        major concern to file-system designers.
+      </p>
+      <p>
+        Two general strategies are possible for storing an n byte file: n
+        consecutive bytes of disk space are allocated, or the file is split up
+        into a number of (not necessarily) contiguous blocks.
+      </p>
+      <p>
+        The same trade-off is present in memory-management systems between pure
+        segmentation and paging.
+      </p>
+      <p>
+        As we have seen, storing a file as a contiguous sequence of bytes has
+        the obvious problem that if a file grows, it may have to be moved on the
+        disk. The same problem holds for segments in memory, except that moving
+        a segment in memory is a relatively fast operation compared to moving a
+        file from one disk position to another. For this reason, nearly all file
+        systems chop files up into fixed-size blocks that need not be adjacent.
+      </p>
+
+      <h5>Block Size</h5>
+      <p>
+        Once it has been decided to store files in fixed-size blocks, the
+        question arises how big the block should be.
+      </p>
+      <p>
+        Given the way disks are organized, the sector, the track, and the
+        cylinder are obvious candidates for the unit of allocation (although
+        these are all device dependent, which is a minus). In a paging system,
+        the page size is also a major contender.
+      </p>
+      <p>
+        Having a large block size means that every file, even a 1-byte file,
+        ties up an entire cylinder. It also means that small files waste a large
+        amount of disk space. On the other hand, a small block size means that
+        most files will span multiple blocks and thus need multiple seeks and
+        rotational delays to read them, reducing performance. Thus if the
+        allocation unit is too large, we waste space; if it is too small, we
+        waste time.
+      </p>
+      <p>
+        With a block size of 1 KB, only about 30–50% of all files fit in a
+        single block, whereas with a 4-KB block, the percentage of files that
+        fit in one block goes up to the 60–70% range. Other data in the paper
+        show that with a 4-KB block, 93% of the disk blocks are used by the 10%
+        largest files.
+      </p>
+      <p>
+        This means that wasting some space at the end of each small file hardly
+        matters because the disk is filled up by a small number of large files
+        (videos) and the total amount of space taken up by the small files
+        hardly matters at all.
+      </p>
+      <p>
+        Even doubling the space the smallest 90% of the files take up would be
+        barely noticeable.
+      </p>
+      <p>
+        On the other hand, using a small block means that each file will consist
+        of many blocks. Reading each block normally requires a seek and a
+        rotational delay (except on a solid-state disk), so reading a file
+        consisting of many small blocks will be slow.
+      </p>
+
+      <h5>Keeping Track of Free Blocks</h5>
+      <p>
+        Once a block size has been chosen, the next issue is how to keep track
+        of free blocks.
+      </p>
+      <p>
+        Two methods are widely used. The first one consists of using a linked
+        list of disk blocks, with each block holding as many free disk block
+        numbers as will fit.
+      </p>
+      <p>
+        With a 1-KB block and a 32-bit disk block number, each block on the free
+        list holds the numbers of 255 free blocks. (One slot is required for the
+        pointer to the next block.) Consider a 1-TB disk, which has about 1
+        billion disk blocks. To store all these addresses at 255 per block
+        requires about 4 million blocks. Generally, free blocks are used to hold
+        the free list, so the storage is essentially free.
+      </p>
+      <p>
+        The other free-space management technique is the bitmap. A disk with n
+        blocks requires a bitmap with n bits.
+      </p>
+      <p>
+        Free blocks are represented by 1s in the map, allocated blocks by 0s (or
+        vice versa).
+      </p>
+      <p>
+        For our example 1-TB disk, we need 1 billion bits for the map, which
+        requires around 130,000 1-KB blocks to store. It is not surprising that
+        the bitmap requires less space, since it uses 1 bit per block, vs. 32
+        bits in the linked-list model.
+      </p>
+      <p>
+        Only if the disk is nearly full (i.e., has few free blocks) will the
+        linked-list scheme require fewer blocks than the bitmap.
+      </p>
+
+      <h5>Disk Quotas</h5>
+      <p>
+        To prevent people from hogging too much disk space, multiuser operating
+        systems often provide a mechanism for enforcing disk quotas.
+      </p>
+      <p>
+        The idea is that the system administrator assigns each user a maximum
+        allotment of files and blocks, and the operating system makes sure that
+        the users do not exceed their quotas. A typical mechanism is described
+        below.
+      </p>
+      <p>
+        When a user opens a file, the attributes and disk addresses are located
+        and put into an open-file table in main memory. Among the attributes is
+        an entry telling who the owner is. Any increases in the file’s size will
+        be charged to the owner’s quota.
+      </p>
+      <p>
+        A second table contains the quota record for every user with a currently
+        open file, even if the file was opened by someone else.
+      </p>
+
+      <h4>File-System Backups</h4>
+      <p>
+        Destruction of a file system is often a far greater disaster than
+        destruction of a computer. If a computer is destroyed by fire, lightning
+        surges, or a cup of coffee poured onto the keyboard, it is annoying and
+        will cost money, but generally a replacement can be purchased with a
+        minimum of fuss.
+      </p>
+      <p>
+        If a computer’s file system is irrevocably lost, whether due to hardware
+        or software, restoring all the information will be difficult, time
+        consuming, and in many cases, impossible.
+      </p>
+      <p>
+        For the people whose programs, documents, tax records, customer files,
+        databases, marketing plans, or other data are gone forever, the
+        consequences can be catastrophic.
+      </p>
+      <p>
+        While the file system cannot offer any protection against physical
+        destruction of the equipment and media, it can help protect the
+        information. It is pretty straightforward: make backups. But that is not
+        quite as simple as it sounds. Let us take a look.
+      </p>
+      <p>
+        Most people do not think making backups of their files is worth the time
+        and effort—until one fine day their disk abruptly dies.
+      </p>
+      <p>
+        Modern tapes hold hundreds of gigabytes and cost pennies per gigabyte.
+        Nevertheless, making backups is not quite as trivial as it sounds, so we
+        will examine some of the related issues below.
+      </p>
+      <p>
+        Backups to tape are generally made to handle one of two potential
+        problems:
+      </p>
+      <ol>
+        <li>Recover from disaster.</li>
+        <li>Recover from stupidity.</li>
+      </ol>
+      <p>
+        The first one covers getting the computer running again after a disk
+        crash, fire, flood, or other natural catastrophe.
+      </p>
+      <p>
+        In practice, these things do not happen very often, which is why many
+        people do not bother with backups.
+      </p>
+      <p>
+        The second reason is that users often accidentally remove files that
+        they later need again. This problem occurs so often that when a file is
+        ‘‘removed’’ in Windows, it is not deleted at all, but just moved to a
+        special directory, the recycle bin, so it can be fished out and restored
+        easily later. Backups take this principle further and allow files that
+        were removed days, even weeks, ago to be restored from old backup tapes.
+      </p>
+      <p>
+        Making a backup takes a long time and occupies a large amount of space,
+        so doing it efficiently and conveniently is important.
+      </p>
+      <p>
+        These considerations raise the following issues. First, should the
+        entire file system be backed up or only part of it? At many
+        installations, the executable (binary) programs are kept in a limited
+        part of the file-system tree. It is not necessary to back up these files
+        if they can all be reinstalled from the manufacturer’s Website or the
+        installation DVD.
+      </p>
+      <p>
+        Also, most systems have a directory for temporary files. There is
+        usually no reason to back it up either.
+      </p>
+      <p>
+        In short, it is usually desirable to back up only specific directories
+        and everything in them rather than the entire file system.
+      </p>
+      <p>
+        Second, it is wasteful to back up files that have not changed since the
+        previous backup, which leads to the idea of
+        <strong>incremental dumps</strong>.
+      </p>
+      <p>
+        The simplest form of incremental dumping is to make a complete dump
+        (backup) periodically, say weekly or monthly, and to make a daily dump
+        of only those files that have been modified since the last full dump.
+        Even better is to dump only those files that have changed since they
+        were last dumped.
+      </p>
+      <p>
+        While this scheme minimizes dumping time, it makes recovery more
+        complicated, because first the most recent full dump has to be restored,
+        followed by all the incremental dumps in reverse order. To ease
+        recovery, more sophisticated incremental dumping schemes are often used.
+      </p>
+      <p>
+        Third, since immense amounts of data are typically dumped, it may be
+        desirable to compress the data before writing them to tape. However,
+        with many compression algorithms, a single bad spot on the backup tape
+        can foil the decompression algorithm and make an entire file or even an
+        entire tape unreadable. Thus the decision to compress the backup stream
+        must be carefully considered.
+      </p>
+      <p>
+        Fourth, it is difficult to perform a backup on an active file system. If
+        files and directories are being added, deleted, and modified during the
+        dumping process, the resulting dump may be inconsistent. However, since
+        making a dump may take hours, it may be necessary to take the system
+        offline for much of the night to make the backup, something that is not
+        always acceptable.
+      </p>
+      <p>
+        For this reason, algorithms have been devised for making rapid snapshots
+        of the file-system state by copying critical data structures, and then
+        requiring future changes to files and directories to copy the blocks
+        instead of updating them in place.
+      </p>
+      <p>
+        Two strategies can be used for dumping a disk to a backup disk: a
+        physical dump or a logical dump.
+      </p>
+      <p>
+        A physical dump starts at block 0 of the disk, writes all the disk
+        blocks onto the output disk in order, and stops when it has copied the
+        last one. Such a program is so simple that it can probably be made 100%
+        bug free, something that can probably not be said about any other useful
+        program.
+      </p>
+      <p>
+        Nevertheless, it is worth making several comments about physical
+        dumping. For one thing, there is no value in backing up unused disk
+        blocks. If the dumping program can obtain access to the free-block data
+        structure, it can avoid dumping unused blocks. However, skipping unused
+        blocks requires writing the number of each block in front of the block
+        (or the equivalent), since it is no longer true that block k on the
+        backup was block k on the disk.
+      </p>
+      <p>
+        The main advantages of physical dumping are simplicity and great speed
+        (basically, it can run at the speed of the disk). The main disadvantages
+        are the inability to skip selected directories, make incremental dumps,
+        and restore individual files upon request. For these reasons, most
+        installations make logical dumps.
+      </p>
+      <p>
+        A logical dump starts at one or more specified directories and
+        recursively dumps all files and directories found there that have
+        changed since some given base date.
+      </p>
+      <p>
+        Thus, in a logical dump, the dump disk gets a series of carefully
+        identified directories and files, which makes it easy to restore a
+        specific file or directory upon request.
+      </p>
+      <h4>File-System Consistency</h4>
+      <p>
+        Another area where reliability is an issue is file-system consistency.
+        Many file systems read blocks, modify them, and write them out later. If
+        the system crashes before all the modified blocks have been written out,
+        the file system can be left in an inconsistent state. This problem is
+        especially critical if some of the blocks that have not been written out
+        are i-node blocks, directory blocks, or blocks containing the free list.
+      </p>
+      <p>
+        To deal with inconsistent file systems, most computers have a utility
+        program that checks file-system consistency
+      </p>
+      <p>
+        This utility can be run whenever the system is booted, especially after
+        a crash.
+      </p>
+
+      <h4>File-System Performance</h4>
+      <p>
+        Access to disk is much slower than access to memory. Reading a 32-bit
+        memory word might take 10 nsec. Reading from a hard disk might proceed
+        at 100 MB/sec, which is four times slower per 32-bit word, but to this
+        must be added 5–10 msec to seek to the track and then wait for the
+        desired sector to arrive under the read head.
+      </p>
+      <p>
+        If only a single word is needed, the memory access is on the order of a
+        million times as fast as disk access.
+      </p>
+      <p>
+        As a result of this difference in access time, many file systems have
+        been designed with various optimizations to improve performance:
+      </p>
+      <h5>Caching</h5>
+      <p>
+        The most common technique used to reduce disk accesses is the
+        <strong>block cache</strong> or <strong>buffer cache</strong>.
+      </p>
+      <p>
+        A cache is a collection of blocks that logically belong on the disk but
+        are being kept in memory for performance reasons.
+      </p>
+      <p>
+        Various algorithms can be used to manage the cache, but a common one is
+        to check all read requests to see if the needed block is in the cache.
+        If it is, the read request can be satisfied without a disk access. If
+        the block is not in the cache, it is first read into the cache and then
+        copied to wherever it is needed. Subsequent requests for the same block
+        can be satisfied from the cache.
+      </p>
+      <h5>Block Read Ahead</h5>
+      <p>
+        A second technique for improving perceived file-system performance is to
+        try to get blocks into the cache before they are needed to increase the
+        hit rate. In particular, many files are read sequentially. When the file
+        system is asked to produce block k in a file, it does that, but when it
+        is finished, it makes a sneaky check in the cache to see if block k + 1
+        is already there. If it is not, it schedules a read for block k + 1 in
+        the hope that when it is needed, it will have already arrived in the
+        cache. At the very least, it will be on the way.
+      </p>
+      <p>
+        This read-ahead strategy works only for files that are actually being
+        read sequentially. If a file is being randomly accessed, read ahead does
+        not help.
+      </p>
+      <h5>Reducing Disk-Arm Motion</h5>
+      <p>
+        Caching and read ahead are not the only ways to increase file-system
+        performance. Another important technique is to reduce the amount of
+        disk-arm motion by putting blocks that are likely to be accessed in
+        sequence close to each other, preferably in the same cylinder. When an
+        output file is written, the file system has to allocate the blocks one
+        at a time, on demand. If the free blocks are recorded in a bitmap, and
+        the whole bitmap is in main memory, it is easy enough to choose a free
+        block as close as possible to the previous block. With a free list, part
+        of which is on disk, it is much harder to allocate blocks close
+        together.
+      </p>
+
+      <h4>Defragmenting Disks</h4>
+      <p>
+        When the operating system is initially installed, the programs and files
+        it needs are installed consecutively starting at the beginning of the
+        disk, each one directly following the previous one. All free disk space
+        is in a single contiguous unit following the installed files. However,
+        as time goes on, files are created and removed and typically the disk
+        becomes badly fragmented, with files and holes all over the place. As a
+        consequence, when a new file is created, the blocks used for it may be
+        spread all over the disk, giving poor performance.
+      </p>
+      <p>
+        The performance can be restored by moving files around to make them
+        contiguous and to put all (or at least most) of the free space in one or
+        more large contiguous regions on the disk. Windows has a program,
+        defrag, that does precisely this. Windows users should run it regularly,
+        except on SSDs.
+      </p>
+
+      <a class="end-link" href="/part-four/">Next part: Input/Output</a>
+    </article>
+  </body>
+</html>
